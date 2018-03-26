@@ -4,19 +4,15 @@ angular.module('app').factory('chartFactory', function ($http) {
     var factory = {};
     factory.formatChartHeader1 = function (data) {
         return [{
-            name: 'Querys', colorByPoint: true,
-            data: [{
-                name: 'IMPROVED',
-                y: data.FOOT.COINCIDENT_OK.COINCIDENT_OK_IMPROVE,
-                color: 'green'
-            }, {
-                name: 'UNCHANGUED',
-                y: data.FOOT.COINCIDENT_OK.COINCIDENT_OK_EQUAL
-            }, {
-                name: 'REGRESSED',
-                y: data.FOOT.COINCIDENT_OK.COINCIDENT_OK_EQUAL,
-                color: 'red'
-            }]
+            name: 'Same plan',
+            data: [data.FOOT.COINCIDENT_OK.COINCIDENT_OK_IMPROVE_SAMEPLAN,
+            data.FOOT.COINCIDENT_OK.COINCIDENT_OK_EQUAL_SAMEPLAN,
+                data.FOOT.COINCIDENT_OK.COINCIDENT_OK_REGRET_SAMEPLAN]
+        }, {
+            name: 'Dif plan',
+                data: [data.FOOT.COINCIDENT_OK.COINCIDENT_OK_IMPROVE_DIFPLAN,
+                data.FOOT.COINCIDENT_OK.COINCIDENT_OK_EQUAL_DIFPLAN,
+                data.FOOT.COINCIDENT_OK.COINCIDENT_OK_REGRET_DIFPLAN]
         }];
     };
     factory.formatChartHeader2 = function (data) {

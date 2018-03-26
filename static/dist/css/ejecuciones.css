@@ -81,8 +81,12 @@ section#ejecuciones {
 #ejecuciones .data-report p.bold {
     font-weight: 700;
 }
-.header-chart div > span > p {
-    
+
+#ejecuciones .header-chart div>span>p {
     margin-top: 10px;
     color: black;
+}
+
+#ejecuciones pre{
+    font-size: 10px;
 }

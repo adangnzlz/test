@@ -12,6 +12,9 @@ angular.module('app').controller("EjecucionesCtrl", function ($scope, $statePara
         return data
     }
 
+    $scope.left = "bsdfasfsadf";
+
+    $scope.right = "asdfasfsadf";
 
     ec.createChartHeader1 = function (data) {
         var series = chartFactory.formatChartHeader1(data);
@@ -19,21 +22,32 @@ angular.module('app').controller("EjecucionesCtrl", function ($scope, $statePara
             chart: { type: 'column' },
             title: { text: 'COINCIDENT OK' },
             xAxis: {
-                type: 'category',
-                title: {
+                categories: ['IMPROVED', 'UNCHANGUED', 'REGRESSED'], title: {
                     text: '<p>Total number of querys : <b>' + data.FOOT.COINCIDENT_OK.COINCIDENT_OK_NUMBER +
                         '</b></p><p>Total sum : <b>' + data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM +
                         '</b></p>', useHTML: true
                 }
             },
+
             yAxis: { title: { text: 'Number of querys' } },
-            legend: { enabled: false },
-            plotOptions: { series: { borderWidth: 0, dataLabels: { enabled: true } } },
+
             tooltip: {
-                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b><br/>'
+                formatter: function () {
+                    return '<b>' + this.x + '</b><br/>' +
+                        this.series.name + ': ' + this.y + '<br/>' +
+                        'Total: ' + this.point.stackTotal;
+                }
             },
+
+            plotOptions: {
+                column: {
+                    stacking: 'normal'
+                }
+            },
+
             series: series
+
+
         });
     }
     ec.createChartHeader2 = function (data) {
@@ -85,7 +99,7 @@ angular.module('app').controller("EjecucionesCtrl", function ($scope, $statePara
         });
     }
     ec.createChartHeader5 = function (data) {
-        var data = chartFactory.formatChartHeader4(data);
+        var data = chartFactory.formatChartHeader5(data);
         Highcharts.chart('header-chart-5', {
             chart: { type: 'column' },
             title: { text: 'NO COINCIDENT' },
@@ -110,6 +124,27 @@ angular.module('app').controller("EjecucionesCtrl", function ($scope, $statePara
         ec.createChartHeader3(ec.data);
         ec.createChartHeader4(ec.data);
         ec.createChartHeader5(ec.data);
+        // var one = ec.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY[0].sql_id.binds.PLAN.plan_snapshot1.plan_lines.plan_lines.toString().split(",").join("\n");
+        // other = ec.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY[0].sql_id.binds.PLAN.plan_snapshot1.plan_lines.plan_lines.toString().split(",").join("\n");
+        // other = other.replace("Id", "Id2");
+        // color = '', span = null;
+        // var diff = JsDiff.diffLines(one, other),
+        //     display = document.getElementById('display'),
+        //     fragment = document.createDocumentFragment();
+
+        // diff.forEach(function (part) {
+        //     // green for additions, red for deletions
+        //     // grey for common parts
+        //     color = part.added ? 'green' :
+        //         part.removed ? 'red' : 'grey';
+        //     span = document.createElement('span');
+        //     span.style.color = color;
+        //     span.appendChild(document
+        //         .createTextNode(part.value));
+        //     fragment.appendChild(span);
+        // });
+
+        // display.appendChild(fragment);
     });
 
 

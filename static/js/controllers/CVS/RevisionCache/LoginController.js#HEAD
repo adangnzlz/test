@@ -1,0 +1,51 @@
+app.controller("LoginCtrl", function($scope,vertxEventBusService){
+
+        vertxEventBusService.send('repository_actions', {VERTX_ACTION: 'select_all'});
+
+        
+        if($scope.AddRepo === "Add repository"){
+                $scope.seePopup('NewRepo','');
+            }
+            $scope.login2=false;
+            //$scope.refreshPage("Login");
+            $scope.page = "Login";
+            $scope.info="Connecting with server...";
+            $scope.HaveResults = false;
+            $scope.Results = "";
+            $scope.SnapshotsResults="";
+            console.log("entra en login");
+            $scope.no_logado = true;
+            $scope.logado = false;
+            $scope.valor="Back";
+           /*document.getElementById("user").value ="";
+            document.getElementById("password").value ="";*/
+            sessionStorage.clear();
+            console.log("valor: "+$scope.valor);
+                       
+            /* alert($scope.clasesCss.page-wrapper);
+            alert(JSON.stringify($scope.clasesCss[0]));*/
+                        
+            /*$scope.clasesCssFormulario={
+            animated:false,
+            bounceOutLeft :false
+            };*/
+                       
+            console.log(document.getElementById('form1'));
+            $scope.changeValue=function(valor){
+                $scope.valor=valor;
+                /* if(valor==="Back"){
+                    alert($scope.selectedRepo);
+                    //sessionStorage.repo = $scope.selectedRepo;
+                    alert("sessionStorage.repo :"+sessionStorage.repo);
+                    $scope.clasesCssFormulario.animated=true;
+                    $scope.clasesCssFormulario.bounceOutLeft=true;
+                   } else{
+                     $scope.clasesCssFormulario.animated=true;
+                     $scope.clasesCssFormulario.bounceOutLeft=true;
+                     } */          
+            }; 
+            
+           // console.log("sesion: "+sessionStorage.idSesion);
+            //console.log("messageRepository: "+messageRepository);
+           // console.log(('repository_actions', {VERTX_ACTION: 'select_all'}));
+});

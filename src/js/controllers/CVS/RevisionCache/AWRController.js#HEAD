@@ -1,0 +1,303 @@
+app.controller("AWRCtrl", function($scope,vertxEventBusService,actionData,$stateParams,$state,$filter){
+            console.log("entra en AWRCtrl");
+                   if(sessionStorage.logado=== undefined)
+                  {
+                      $state.go("Login");
+                  }
+                  else{
+                    //  if($scope.AWRFilters){
+                         
+               //       }
+                      
+                      $scope.commnad_type = [];
+                     //$scope.idSnapshotURL = decodeURIComponent($stateParams.idSnapshot);
+                     $scope.refreshPage();
+                     $scope.SelectedWorkName = decodeURIComponent($stateParams.SelectedWorkName);
+                    $scope.databaseName = sessionStorage.databaseDbname;
+                    
+                    $scope.showFilters = function(value){
+                        if(value===true){
+                            vertxEventBusService.send('oracle_capture_actions', {ID_SES:sessionStorage.idSesion, ID_CON: (actionData.setIdCon()).toString(),VERTX_ACTION:"show_filters",DB_TYPE:"Oracle"}); 
+                        
+                        }
+                      $scope.AWRFilters = value;  
+                    };
+               
+                      vertxEventBusService.send('work_actions', {VERTX_ACTION: 'select_detailname', ID_SES:sessionStorage.idSesion, ID_CON: (actionData.setIdCon()).toString(),WORK_NAME:$scope.SelectedWorkName});
+                              
+                             $scope.TestConnAWR = function(){
+                                  $scope.SeeDetails($scope.SelectedWorkName);
+                                 sessionStorage.databaseHostname = document.getElementById("HOST_NAME").value;
+                                 sessionStorage.databasePort = document.getElementById("PORT").value;
+                                 sessionStorage.databaseDbname = document.getElementById("DB_NAME").value;
+                                 $scope.databaseName = sessionStorage.databaseDbname;
+                                 sessionStorage.databaseUsername = document.getElementById("USER_NAME").value;
+                                 sessionStorage.databasePassword = document.getElementById("PASSWD").value;
+                                 sessionStorage.databaseService = document.getElementById("SERVICE").value;
+                                 vertxEventBusService.send('oracle_capture_actions', {ID_SES:sessionStorage.idSesion, ID_CON: (actionData.setIdCon()).toString(),VERTX_ACTION:"test_oracle_conn",HOST_NAME:sessionStorage.databaseHostname,PORT:sessionStorage.databasePort,DB_NAME:sessionStorage.databaseDbname,USER_NAME:sessionStorage.databaseUsername,PASSWD:sessionStorage.databasePassword,ORACLE_SERVICE_SID:sessionStorage.databaseService}); 
+                             };
+                             
+                             if(sessionStorage.connectionOK){
+                                 console.log("está logado en la bbdd");
+                                  $scope.refreshPage();
+                                 $scope.connectionOK = true;
+                                 $scope.databasename = sessionStorage.AWRdbname;
+                                 vertxEventBusService.send('oracle_capture_actions', {ID_SES:sessionStorage.idSesion, ID_CON: (actionData.setIdCon()).toString(),VERTX_ACTION:"test_oracle_conn",HOST_NAME:sessionStorage.databaseHostname,PORT:sessionStorage.databasePort,DB_NAME:sessionStorage.databaseDbname,USER_NAME:sessionStorage.databaseUsername,PASSWD:sessionStorage.databasePassword,ORACLE_SERVICE_SID:sessionStorage.databaseService}); 
+                                 
+                             }
+                             
+                              $scope.setCommandType = function () {
+                                        $scope.commandTypeSeleccionado = $filter('filter')($scope.commandTypeFilter.VALUES, {checked: true});
+                                         $scope.commnad_type = [];
+                                      for(i=0;i < $scope.commandTypeSeleccionado.length;i++){                           
+                                          $scope.commnad_type.push($scope.commandTypeSeleccionado[i].VALUES);
+                                      } 
+                                      $scope.generateGlobalQuery();
+                                };
+                                
+                                $scope.generateFilterQuery = function(filtro,operador,valor){
+                                    console.log("llama a generateFilterQuery y el filtro es " + filtro + " , el operador es " + operador + " y el valor es " + valor);
+                                      if(operador !== "LIKE"){
+                                         $scope.filterQuery = filtro + " " + operador + " " + valor;
+                                         //$scope.generateGlobalQuery();
+                                     }
+                                       if(operador === "LIKE"){
+                                                $scope.filterQuery =  filtro + " " + operador + " '%" + valor + "%'";
+                                                //$scope.generateGlobalQuery();
+                                       }
+                                       return $scope.filterQuery;
+                                     
+                                };
+                             
+                              $scope.setFilterValues = function (filtro,operador,valor,tipo){
+                                  /*
+                                  if(tipo==="N"){
+                                      if(isInt(valor))
+                                      
+                                  }
+                                  else{
+                                      console.log("no es numerico");
+                                  }
+                                  */
+                                  console.log("llama a setFilterValues y el filtro es " + filtro + ",el operador es "+ operador +"y el valor es " + valor);
+                                if(filtro === "PARSING_SCHEMA_NAME" && valor !== undefined && operador !== undefined){
+                                    
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                            $scope.errorParsingSchemaName = false;
+                                        }
+                                        else{
+                                            $scope.errorParsingSchemaName = true;
+                                        }
+                                    }
+                                  $scope.selectedParsingSchemaQuery = $scope.generateFilterQuery(filtro,operador,valor);
+                                  $scope.generateGlobalQuery();
+                                  //console.log("$scope.selectedParsingSchemaQuery vale " + $scope.selectedParsingSchemaQuery);
+                                }
+                                if(filtro === "SQL_TEXT" && valor !== undefined && operador !== undefined){
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                            $scope.errorSqlText = false;
+                                        }
+                                        else{
+                                            $scope.errorSqlText = true;
+                                        }
+                                    }
+                                  $scope.selectedSqlTextFilterQuery = $scope.generateFilterQuery(filtro,operador,valor);
+                                  $scope.generateGlobalQuery();
+                                 // alert("$scope.selectedSqlTextFilterQuery vale " + $scope.selectedSqlTextFilterQuery);
+                                }
+                                if(filtro === "SQL_ID" && valor !== undefined && operador !== undefined){
+                                    
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                          
+                                          //  $scope.generateGlobalQuery();
+                                            $scope.errorSqlId = false;
+                                        }
+                                        else{
+                                            $scope.errorSqlId = true;
+                                        }
+                                    }
+                                    
+                                  $scope.selectedSqlIdQuery = $scope.generateFilterQuery(filtro,operador,valor);
+                                  $scope.generateGlobalQuery();
+                                  //console.log("$scope.selectedSqlIdQuery vale " + $scope.selectedSqlIdQuery);
+                                }     
+                                if(filtro === "SQL_MODULE" && valor !== undefined && operador !== undefined){
+                                    
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                          
+                                          //  $scope.generateGlobalQuery();
+                                            $scope.errorSqlModule = false;
+                                        }
+                                        else{
+                                            $scope.errorSqlModule = true;
+                                        }
+                                    }
+                                      $scope.selectedSqlModule = $scope.generateFilterQuery(filtro,operador,valor);
+                                      $scope.generateGlobalQuery();
+                                }   
+                                if(filtro === "PLAN_HASH_VALUE" && valor !== undefined && operador !== undefined){
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                                $scope.errorPlanHashValue = false;
+                                        }
+                                        else{
+                                            $scope.errorPlanHashValue = true;
+                                        }
+                                    }
+                                    
+                                    $scope.selectedPlanHashValue = $scope.generateFilterQuery(filtro,operador,valor);
+                                    $scope.generateGlobalQuery();                                    
+                                  
+                                }    
+                                if(filtro === "EXECUTIONS" && valor !== undefined && operador !== undefined){
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                              $scope.errorExecutions = false;
+                                        }
+                                        else{
+                                            $scope.errorExecutions = true;
+                                        }
+                                    }
+                                              $scope.selectedExecutionsValue = $scope.generateFilterQuery(filtro,operador,valor);
+                                              $scope.generateGlobalQuery();
+                                  //console.log("$scope.selectedSqlIdQuery vale " + $scope.selectedSqlModule);
+                                }                                    
+                                
+                                if(filtro === "DISK_READS" && valor !== undefined && operador !== undefined){
+                                    
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                       
+                                       // $scope.generateGlobalQuery();
+                                              $scope.errorDiskReads = false;
+                                        }
+                                        else{
+                                            $scope.errorDiskReads = true;
+                                        }
+                                    }                                    
+                                     $scope.selectedDiskReads = $scope.generateFilterQuery(filtro,operador,valor);
+                                     $scope.generateGlobalQuery();
+                                  //console.log("$scope.selectedSqlIdQuery vale " + $scope.selectedSqlModule);
+                                }                                  
+                                
+                                if(filtro === "ROWS_PROCESSED" && valor !== undefined && operador !== undefined){
+                                    
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                       
+                                       // $scope.generateGlobalQuery();
+                                              $scope.errorRowsProcessed = false;
+                                        }
+                                        else{
+                                            $scope.errorRowsProcessed = true;
+                                        }
+                                    }                                    
+                                     $scope.selectedRowsProcessed = $scope.generateFilterQuery(filtro,operador,valor);
+                                     $scope.generateGlobalQuery();
+                                  //console.log("$scope.selectedSqlIdQuery vale " + $scope.selectedSqlModule);
+                                }     
+                                if(filtro === "CPU_TIME" && valor !== undefined && operador !== undefined){
+                                    
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                       
+                                       // $scope.generateGlobalQuery();
+                                              $scope.errorCpuTime = false;
+                                        }
+                                        else{
+                                            $scope.errorCpuTime = true;
+                                        }
+                                    }                                    
+                                     $scope.selectedCpuTime = $scope.generateFilterQuery(filtro,operador,valor);
+                                     $scope.generateGlobalQuery();
+                                  //console.log("$scope.selectedSqlIdQuery vale " + $scope.selectedSqlModule);
+                                }
+ 
+                                if(filtro === "ELAPSED_TIME" && valor !== undefined && operador !== undefined){
+                                    
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                       
+                                       // $scope.generateGlobalQuery();
+                                              $scope.errorElapsedTime = false;
+                                        }
+                                        else{
+                                            $scope.errorElapsedTime = true;
+                                        }
+                                    }                                    
+                                     $scope.selectedElapsedTime = $scope.generateFilterQuery(filtro,operador,valor);
+                                     $scope.generateGlobalQuery();
+                                  //console.log("$scope.selectedSqlIdQuery vale " + $scope.selectedSqlModule);
+                                }                                  
+ 
+                                if(filtro === "OPTIMIZER_COST" && valor !== undefined && operador !== undefined){
+                                    
+                                    if(tipo==="N"){
+                                        if(isInt(valor)=== true){
+                                       
+                                       // $scope.generateGlobalQuery();
+                                              $scope.errorOptimizerCost = false;
+                                        }
+                                        else{
+                                            $scope.errorOptimizerCost = true;
+                                        }
+                                    }                                    
+                                     $scope.selectedOptimizerCost = $scope.generateFilterQuery(filtro,operador,valor);
+                                     $scope.generateGlobalQuery();
+                                  //console.log("$scope.selectedSqlIdQuery vale " + $scope.selectedSqlModule);
+                                }                                    
+                             };
+                             
+                                $scope.generateGlobalQuery = function(){
+                                    console.log("llama a generateGlobalQuery");
+                                    if($scope.selectedParsingSchemaQuery){
+                                         console.log("WHERE " + $scope.selectedParsingSchemaQuery);
+                                    } 
+                                    if($scope.selectedSqlTextFilterQuery){
+                                         console.log("entra en sqltext en globalquwery");
+                                         console.log("WHERE " + $scope.selectedSqlTextFilterQuery);
+                                    }
+                                    if($scope.selectedSqlIdQuery){
+                                        console.log("WHERE " + $scope.selectedSqlIdQuery);
+                                    }
+                                    if($scope.selectedSqlModule){
+                                        console.log("WHERE " + $scope.selectedSqlModule);
+                                    }
+                                    if($scope.selectedPlanHashValue){
+                                        console.log("WHERE " + $scope.selectedPlanHashValue);
+                                    }      
+                                    if($scope.selectedExecutionsValue){
+                                        console.log("WHERE " + $scope.selectedExecutionsValue);
+                                    }
+                                    if($scope.selectedDiskReads){
+                                        console.log("WHERE " + $scope.selectedDiskReads);
+                                    } 
+                                    if($scope.selectedRowsProcessed){
+                                        console.log("WHERE " + $scope.selectedRowsProcessed);
+                                    } 
+                                    if($scope.selectedCpuTime){
+                                        console.log("WHERE " + $scope.selectedCpuTime);
+                                    }
+                                    if($scope.selectedElapsedTime){
+                                        console.log("WHERE " + $scope.selectedElapsedTime);
+                                    }     
+                                    if($scope.selectedOptimizerCost){
+                                        console.log("WHERE " + $scope.selectedOptimizerCost);
+                                    }                                      
+                                    if($scope.commnad_type.length > 0){
+                                        console.log("WHERE COMMAND_TYPE in (" + $scope.commnad_type + ")");
+                                    }
+                                    
+                                };                                  
+               
+                             
+//HAGO LA SELECT DE TODOS LOS SNAPSHOTS
+        //vertxEventBusService.send('snapshot_actions', {VERTX_ACTION: 'select_all', ID_WORK: sessionStorage.SelectedIdWork, ID_SES:sessionStorage.idSesion, ID_CON: (actionData.setIdCon()).toString()});
+        //vertxEventBusService.send('repository_actions', {VERTX_ACTION: 'select_all'});
+
+                  }
+});

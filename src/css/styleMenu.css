@@ -1,0 +1,299 @@
+/*@import url(https://fonts.googleapis.com/css?family=Roboto:100);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css);*/
+
+/* body {
+  background: url(http://jsrun.it/assets/p/r/8/X/pr8Xi.png);   bg  1a1a1a  434240  
+  background: url("../img/fondo.jpg");
+background: url("../img/fondo_azul.jpg");
+
+  font-family: 'Roboto';
+}*/
+/*.flat-form p{
+  color:;
+}*/
+/*.flat-form input:focus{
+  background-color:yellow;
+}*/
+
+.flat-form {
+    /* background: #34495e; */
+    border-right: 1px solid;
+    border-color: #e7e7e7;
+    background: white;
+    /* margin: 25px auto; */
+    width: 295px;
+    height: 100%;
+    position: absolute;
+    /* padding-left: 20px; */
+    /* font-family: 'Roboto'; */
+    /* margin-top: 1px; */
+    float: left;
+}
+
+/*.flat-form {
+     background: #34495e; 
+    background: #f8f8f8;
+    background: white;
+    margin: 25px auto;
+    width: 293.7px;
+    height: 370px;
+    position: relative;
+     padding-left: 20px; 
+     font-family: 'Roboto'; 
+    margin-top: 70px;
+}*/
+/*.flat-form {
+    background: #34495e;
+    background: #f8f8f8;
+    margin: 25px auto;
+    width: 40%;
+     height:460px;
+    position: relative;
+    font-family: 'Roboto';
+}*/
+.flat-form .tabs {
+ /* background: #ed7271; */ /*topbar #c0392b #88565b*/
+  background: #337ab7;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  width: 100%;
+  position: relative;
+  display: block;
+  margin-bottom: 20px;
+}
+.flat-form .tabs li {
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+.flat-form .tabs a {
+/*   background: #337ab7; background: #ed7271;  topbar c0392b  #88565b */
+  background: #337ab7;
+  display: block;
+  float: left;
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+/*  padding: 12px 32px 10px 32px;*/
+  padding: 12px 32px 10px 32.1px;
+/*  padding: 12px 22px 12px 22px;*/
+  /*border-right: 1px solid @tab-border;*/
+
+}
+/*.flat-form .tabs li:last-child a {
+  border-right: none;
+  width: 174px;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+}*/
+.flat-form .tabs a.active {
+ /* background: #ed7271; */ /*topbar e74c3c  */
+/*  background: #f8f8f8;*/
+  background: white;
+  color: #337ab7;
+  border-right: none;
+  -webkit-transition: all 0.5s linear;
+	-moz-transition: all 0.5s linear;
+	transition: all 0.5s linear;
+}
+.flat-form .form-action {
+    /* padding: 0 20px; */
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+/*.flat-form .form-action {
+  padding: 0 20px;
+  padding: 10px;
+  position: relative;
+}*/
+
+/*.flat-form .form-action h1 {
+  font-size: 42px;
+  padding-bottom: 10px;
+}*/
+.flat-form .form-action p {
+/*  font-size: 12px;
+  padding-bottom: 10px;*/
+  line-height: 25px;
+}
+.flat-form form {
+  padding-right: 20px !important;
+}
+/*
+.flat-form form input[type=text],
+.flat-form form input[type=password],
+.flat-form form input[type=submit] {
+  font-family: 'Roboto';
+}
+*/
+.flat-form form input[type=text], .flat-form form input[type=password], #selectRepo {
+    background: #F5F5F5;
+    width: 210px;
+    height: 40px;
+    margin-bottom: 20px;
+    padding-left: 15px;
+    border: none;
+    color: #337ab7;
+    outline: none;
+}
+
+.flat-form .dark-box {
+  background: #5e0400;
+  box-shadow: 1px 3px 3px #3d0100 inset;
+  height: 40px;
+  width: 50px;
+}
+.flat-form .form-action .dark-box.bottom {
+  position: absolute;
+  right: 0;
+  bottom: -24px;
+}
+.flat-form .tabs + .dark-box.top {
+  position: absolute;
+  right: 0;
+  top: 0px;
+}
+.show {
+  display: block;
+}
+.hide {
+  display: none;
+}
+
+.flat-form .button {
+    border: none;
+    display: block;
+    background: #136899;
+    height: 40px;
+    width: 80px;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 5px;
+    /*box-shadow: 0px 3px 1px #2075aa;*/
+  	-webkit-transition: all 0.15s linear;
+	  -moz-transition: all 0.15s linear;
+	  transition: all 0.15s linear;
+}
+
+.flat-form .button:hover {
+  background: #1e75aa;
+  /*box-shadow: 0 3px 1px #237bb2;*/
+}
+
+.flat-form .button:active {
+  background: #136899;
+  /*box-shadow: 0 3px 1px #0f608c;*/
+}
+
+::-webkit-input-placeholder {
+  color:dark ;    /*  #e74c3c */
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #337ab7;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #337ab7;
+}
+:-ms-input-placeholder {
+  color: #337ab7;
+}
+
+.loginIcon {
+    float: left;
+    width: 10%;
+    margin-top: 12px;
+    /* margin-right: 5px; */
+    font-size: 14px;
+    /* color: #337ab7; */
+    /* position: relative; */
+}
+
+.loginButton {
+    width: 90%;
+    /* float: right; */
+    margin-left: 10%
+}
+
+.loginTitle{
+        margin: 0px;
+}
+
+.errorLogin {
+    margin-left: 10%;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.leftNav{
+    float: left;
+    width: 65%;
+}
+
+.rightNav{
+    float: right;
+    width: 35%;
+}
+
+.infoUser {
+    float: left;
+    font-size: 13px;
+    background-color: #ddd;
+    border-color: #ddd;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.rightMenu{
+    float: right;
+    color: #337ab7; 
+    font-size: 17px;
+    margin-top: 10px;
+    margin-right: 15px;
+}
+.subtitle{
+    float: right;
+    font-size: 13px;
+}
+
+.capaSlider {
+    margin-left: 310px;
+    position: absolute;
+    float: right;
+    margin-top: 10px;
+    height: 100%;
+    /* width: 75%; */
+    max-width: 100%;
+    max-height: 60%;    
+}
+
+.capaSelectedRepo{
+    display: inline-flex;
+    width: 252px;
+}
+
+.infoIcon{
+    margin-top: 8px;
+    margin-left: 5px;
+    font-size: 15px;
+}
+
+.dlInfoRepo{
+    margin-bottom: 5px;
+    text-align: left;
+    width: 100px;
+}
+
+#capaActionRepo{
+    background: #F5F5F5;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+}

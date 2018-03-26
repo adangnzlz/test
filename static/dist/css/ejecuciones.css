@@ -1,0 +1,88 @@
+section#ejecuciones {
+    padding: 50px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    section#ejecuciones {
+        padding: 15px;
+    }
+}
+
+#ejecuciones .container {
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#ejecuciones .label {
+    font-size: 17px;
+    color: black;
+    text-align: left;
+    padding: 20px 0px;
+}
+
+#ejecuciones .fields {
+    margin: 20px 0px;
+}
+
+#ejecuciones .label span {
+    font-weight: 300;
+    font-size: 17px;
+}
+
+#ejecuciones .label span.bold {
+    font-weight: 700;
+}
+
+#ejecuciones .label i {
+    font-weight: 300;
+    font-size: 17px;
+}
+
+#ejecuciones .label a:hover {
+    text-decoration: none;
+    color: #337ab7;
+}
+
+#ejecuciones h1 {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+#ejecuciones .data-report {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding: 0px 50px;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    #ejecuciones .data-report {
+        padding: 0px 25px;
+    }
+}
+
+#ejecuciones .data-report p {
+    display: inline-block;
+    text-align: left;
+    font-size: 15px;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+    #ejecuciones .data-report p {
+        font-size: 12px;
+    }
+}
+
+#ejecuciones .data-report p.bold {
+    font-weight: 700;
+}
+.header-chart div > span > p {
+    
+    margin-top: 10px;
+    color: black;
+}

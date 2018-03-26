@@ -1,0 +1,223 @@
+app.controller("RepoCtrl", function ($scope,$state,vertxEventBusService,ngDialog) {
+    console.log("enta en NewRepoController");
+    //$scope.repos = [];
+    $scope.tables = true;
+                    $scope.$on('errorPass', function(ev, args) {
+                       $scope.errorP = args.errorPass;
+                        
+                         if($scope.errorPass===false){
+                           // closeThisDialog();
+                            ngDialog.close();
+                            if($scope.origen==='edit'){
+                                $scope.cargarDBtype();
+                            }else if($scope.origen==='remove'){
+                                $scope.seePopup('DeleteRepo','');
+                            }else if($scope.origen==='add'){
+                                $scope.nuevoRepo();
+                            }
+                           
+                            $scope.noError=true;
+                         
+                        }      
+                       
+                     });
+                     
+                    $scope.$on('error', function(ev, args) {
+                         $scope.Progress = false;
+                            $scope.tables = true;
+                         console.log("el error en repocontroller es " + args.error);
+                         $scope.Error = args.error;
+                         console.log("$scope.Error: " + $scope.Error);
+                         //$scope.notTable=false;
+                         if($scope.Error === "Repository deleted succesfully"){
+                             console.log("entra en el if del error");
+                             
+                               vertxEventBusService.send('repository_actions', {VERTX_ACTION: 'select_all'});
+                               $state.go("Login");
+                               
+                         }else if(args.error === "Repository added succesfully"){
+                             //console.log("entra en el if del error");
+                               
+                               vertxEventBusService.send('repository_actions', {VERTX_ACTION: 'select_all'});
+                               $state.go("Login");
+                               
+                         }else if(args.error === "Repository modified succesfully"){
+                             //console.log("entra en el if del error");
+                               
+                               console.log("se ha añadido correctamente");
+                               vertxEventBusService.send('repository_actions', {VERTX_ACTION: 'select_all'});
+                               $state.go("Login");
+                               
+                         }
+                         console.log("$scope.VERTX_MESSAGE: "+$scope.VERTX_MESSAGE);
+                        
+                     });
+      
+    
+    
+     $scope.checkPass=function(){
+
+        vertxEventBusService.send('repository_actions', {VERTX_ACTION: 'verify_repo_pass', "REPO_PASS":$scope.repoPass});
+        console.log({VERTX_ACTION: 'verify_repo_pass', "REPO_PASS":$scope.repoPass});
+        
+     };
+     
+     $scope.cambioRepo=function(){
+         
+      //alert(" repo "+$scope.selectedRepoName);
+        vertxEventBusService.send('repository_actions', {VERTX_ACTION:"select_repo_data",REPO_NAME:$scope.selectedRepoName});
+         console.log({VERTX_ACTION:"select_repo_data",REPO_NAME:$scope.selectedRepoName});
+         
+     };
+     
+     $scope.valorOracle=function(){
+
+        if(document.getElementById("DB_TYPE").value==="Oracle"){
+            $scope.oracle=true;
+        }else if(document.getElementById("DB_TYPE").value===""){
+            $scope.oracle=false;
+        }else{
+            $scope.oracle=false;
+        }
+
+     };
+       if($scope.DEFAULT_REPO===true){
+                $scope.DEFAULT="yes";
+        }else{
+                $scope.DEFAULT="no";
+        }     
+        
+      $scope.cargarDBtype=function(){
+          vertxEventBusService.send('repository_actions', {VERTX_ACTION:"select_repodb"}); 
+         // $scope.CONNECTION_NAME_ORI.value=$scope.selectedRepoName;
+            $scope.seePopup('EditRepo',''); 
+      };
+      
+      $scope.TestConnModify = function(){
+
+        vertxEventBusService.send('repository_actions', {VERTX_ACTION:"test_conn",DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:document.getElementById("SERVICE").value,DEFAULT_REPO:$scope.DEFAULT}); 
+        console.log({VERTX_ACTION:"test_conn", CONNECTION_NAME:$scope.CONNECTION_NAME,DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:document.getElementById("SERVICE").value,DEFAULT_REPO:$scope.DEFAULT});
+        console.log("$scope.busTest: "+$scope.busTest +" $scope.busAdd :"+$scope.busAdd);
+
+
+       $scope.Error ="";
+       $scope.Progress = true;
+       alert("$scope.test "+$scope.test);
+       if($scope.test===true){
+         $scope.EditRepo();
+
+        }
+        
+      };
+       
+      $scope.EditRepo = function(){
+        $scope.Error="";     
+        $scope.Progress = true; 
+        if($scope.DEFAULT_REPO===true){
+                $scope.DEFAULT="yes";
+        }else{
+                $scope.DEFAULT="no";
+        }
+        console.log("$scope.DEFAULT: "+$scope.DEFAULT);
+        console.log("$scope.selectedRepoName: "+$scope.selectedRepoName);
+
+            vertxEventBusService.send('repository_actions', {VERTX_ACTION:"modify_repo",CONNECTION_NAME_ORI:$scope.selectedRepoName,CONNECTION_NAME:$scope.CONNECTION_NAME,DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:document.getElementById("SERVICE").value,DEFAULT_REPO:$scope.DEFAULT}); 
+            console.log({VERTX_ACTION:"modify_repo",CONNECTION_NAME:$scope.CONNECTION_NAME,DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:document.getElementById("SERVICE").value,DEFAULT_REPO:$scope.DEFAULT});  
+                    
+      };  
+      
+      $scope.InfoRepo = function(){
+           console.log("repoName:"+$scope.selectedRepoName);
+
+           vertxEventBusService.send('repository_actions', {VERTX_ACTION:"select_repo_data",REPO_NAME:$scope.selectedRepoName});
+           console.log('repository_actions', {VERTX_ACTION:"select_repo_data", REPO_NAME:$scope.selectedRepoName});
+           $scope.seePopup('InfoRepo','');
+      }; 
+      
+    $scope.nuevoRepo=function(){ 
+       vertxEventBusService.send('repository_actions', {VERTX_ACTION:"select_repodb"}); 
+       $scope.seePopup('NewRepo',''); 
+       console.log("funcion nuevo repositororio");
+       console.log("DB_TYPE: "+JSON.stringify($scope.DB_TYPE));
+       //console.log("DB_TYPE: "+$scope.DB_TYPE.DB_TYPE);
+    }; 
+      
+    $scope.CreateRepo = function(){
+      
+        if($scope.DEFAULT_REPO===true){
+             $scope.DEFAULT="yes";
+         }else{
+            $scope.DEFAULT="no";
+         }
+         
+       vertxEventBusService.send('repository_actions', {VERTX_ACTION:"create_repo_tables",DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:$scope.SERVICE,DEFAULT_REPO:$scope.DEFAULT}); 
+       console.log({VERTX_ACTION:"create_repo_tables", CONNECTION_NAME:$scope.CONNECTION_NAME,DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:$scope.SERVICE,DEFAULT_REPO:$scope.DEFAULT});  
+       console.log("$scope.busTest: "+$scope.busTest +" $scope.busAdd :"+$scope.busAdd);
+       $scope.Error ="";
+       $scope.Progress = true;
+       
+       if($scope.createRepo===true){
+          $scope.TestConn();
+       }
+    };
+    
+    $scope.TestConn = function(){
+      
+        vertxEventBusService.send('repository_actions', {VERTX_ACTION:"test_conn",DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:$scope.SERVICE,DEFAULT_REPO:$scope.DEFAULT}); 
+        console.log({VERTX_ACTION:"test_conn", CONNECTION_NAME:$scope.CONNECTION_NAME,DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:$scope.SERVICE,DEFAULT_REPO:$scope.DEFAULT});
+        console.log("$scope.busTest: "+$scope.busTest +" $scope.busAdd :"+$scope.busAdd);
+      
+        $scope.Error ="";
+        $scope.Progress = true;
+        alert("$scope.test"+$scope.test);
+        if($scope.test===true){
+             $scope.AddRepo();
+         }
+    };
+    
+    $scope.CreateRepoNotTables = function(){
+        
+        if($scope.DEFAULT_REPO===true){
+             $scope.DEFAULT="yes";
+         }else{
+            $scope.DEFAULT="no";
+         }
+         
+       vertxEventBusService.send('repository_actions', {VERTX_ACTION:"create_repo_tables",DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:$scope.SERVICE,DEFAULT_REPO:$scope.DEFAULT}); 
+       console.log({VERTX_ACTION:"create_repo_tables", CONNECTION_NAME:$scope.CONNECTION_NAME,DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:$scope.SERVICE,DEFAULT_REPO:$scope.DEFAULT});  
+       console.log("$scope.busTest: "+$scope.busTest +" $scope.busAdd :"+$scope.busAdd);
+       $scope.Error ="";
+       $scope.Progress = true;
+
+    };
+
+    $scope.AddRepo = function(){
+      
+        vertxEventBusService.send('repository_actions', {VERTX_ACTION:"add_repo", CONNECTION_NAME:$scope.CONNECTION_NAME,DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:$scope.SERVICE,DEFAULT_REPO:$scope.DEFAULT}); 
+        console.log({VERTX_ACTION:"add_repo", CONNECTION_NAME:$scope.CONNECTION_NAME,DB_TYPE:document.getElementById("DB_TYPE").value,HOST_NAME:$scope.HOST_NAME,PORT:$scope.PORT,DB_NAME:$scope.DB_NAME,USER_NAME:$scope.USER_NAME,PASSWD:$scope.PASSWD,ORACLE_SERVICE_SID:$scope.SERVICE,DEFAULT_REPO:$scope.DEFAULT});  
+        console.log("$scope.busTest: "+$scope.busTest +" $scope.busAdd :"+$scope.busAdd);
+
+        $scope.Error ="";
+        $scope.Progress = true;
+
+     }; 
+     
+    $scope.DeleteRepo = function(repo){
+                   
+                    $scope.Error ="";
+                    $scope.Progress = true;
+                    console.log("llama a deleterepo");
+                    console.log({VERTX_ACTION:"delete", CONNECTION_NAME: repo});
+                    vertxEventBusService.send('repository_actions', {VERTX_ACTION:"delete_repo", CONNECTION_NAME: repo});
+                    console.log("shift $scope.repos "+$scope.repos.shift());
+                    
+                    for(var i=0; i<$scope.selectedRepo.length; i++){
+                            
+                            if(!selectedRepo){
+                            $scope.option.shift();
+                            }
+                    }
+           }; 
+
+});
+

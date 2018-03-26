@@ -1,0 +1,553 @@
+app.service('actionData', function () {
+        var snapshots=[] ;
+       // var snapshots;
+        var idCon = 0;
+        //scope.Error = this.getX();
+      //  var scopeWorks;
+        return {
+//            setScopeWorks : function(scope) {
+//                console.log("el scope que recibe es " + JSON.stringify());
+//                //scopeWorks = scope;
+//                scope.Error = this.getX();
+//            },
+//            set : function(data) {
+//                info.error = data;
+//            },
+
+            setSnapshotsResults: function(snapshotsResults){
+         //       console.log("llama a setSnapshotsResults y llega " + JSON.stringify(snapshotsResults));
+                snapshots.push(snapshotsResults);
+            },
+            setIdCon : function() {
+          //      console.log("llama a setIdCon");
+                idCon++;
+                return idCon;
+            },            
+//            getX : function() {
+//                console.log("llama a getX");
+//                return info.error;
+//            },
+            getIdCon : function() {
+          //      console.log("llama a getIdCon e idCon vale " + idCon);
+                return idCon;
+            },
+            getSnapshotsResults: function(){
+                return snapshots;
+            }
+            //
+            ////,
+//            getScopeWorks : function(scope) {
+//               return scope.Error = this.getX();
+//            }
+       };
+    });
+app.controller('MainCtrl',function($scope,$interval,$state,vertxEventBusService,$location,ngDialog,$timeout,$sce,$rootScope,$timeout,actionData,$stateParams){   
+    //console.log("Entra en el controlador de angular...");
+                 
+      $scope.seePopup = function(popup,data){
+              $scope.Error = "";
+              $scope.data = data;
+              $scope.new_WORK_NAME = $scope.data.WORK_NAME;
+              $scope.new_WORK_DESCRIPTION = $scope.data.WORK_DESCRIPTION;
+              $scope.new_SNAPSHOT_DESCRIPTION = $scope.data.SNAPSHOT_DESCRIPTION;
+              
+              
+           ngDialog.open({ 
+                template:'/templates/'+popup+'Template_ngDialog.html',
+                controller: 'MainCtrl',
+                scope: $scope,
+                data: data
+              });
+      };
+if(sessionStorage.logado===undefined)
+{
+ $state.go("Login");
+}
+
+
+$scope.repos = [{
+        value: 'Repositorio 1',
+        selected: true
+    }, {
+        value: 'Repositorio 2'
+    },{
+        value: 'Repositorio 3'
+    },{
+        value: 'Repositorio 4'
+    },{
+        value: 'Repositorio 5'
+    }];
+
+    $scope.validaRepo = function(selectedRepo){
+        if(selectedRepo === "Nuevo Repositorio")
+        {
+           $scope.seePopup('NewRepo','');
+            
+        }
+
+    };
+
+
+
+    
+     init = function(){
+            $scope.no_logado = true;
+            $scope.info="Connecting with server...";
+            
+            if (!$scope.$$phase && !$scope.$root.$$phase) {
+                $scope.$digest();
+            }    
+         var url = $location.url();
+
+                         if(sessionStorage.idSesion){
+                             vertxEventBusService.send('work_actions', {VERTX_ACTION: "select_all", ID_SES:sessionStorage.idSesion, ID_CON:  (actionData.setIdCon()).toString()});
+                         }
+                     
+                             vertxEventBusService.on('work_results', function(messageWorks) {
+                     
+                             
+                                    if(messageWorks[0].detailed){
+                                        $scope.DetailedWorks = messageWorks[1];
+                                    }
+                                    else{
+                                                $scope.WorksResults = messageWorks;    
+                                                $scope.WorksResults.shift();  
+                                              if((messageWorks[0].VERTX_MESSAGE === "Work added succesfully" || messageWorks[0].VERTX_MESSAGE === "Work modified succesfully" || messageWorks[0].VERTX_MESSAGE === "Work deleted succesfully") && messageWorks[0].ID_SES===sessionStorage.idSesion && messageWorks[0].ID_CON===(actionData.getIdCon()).toString()){      
+                                                    setError(messageWorks[0].VERTX_ERROR,messageWorks[0].VERTX_MESSAGE,$scope,ngDialog,$timeout);
+                                              }
+                                              
+                                                if($scope.page==="Works" || $scope.page==="Home"){
+                                                    $scope.generateTable(messageWorks);          
+                                                }                                              
+                                            }
+                            });
+                            //BUS SNAPSHOT_RESULTS
+                            vertxEventBusService.on('snapshot_results', function(messageSnapshots) {
+                                 if(messageSnapshots[0].detailed==="yes" && messageSnapshots[0].ID_SES===sessionStorage.idSesion  && messageSnapshots[0].ID_CON===(actionData.getIdCon()).toString()){
+                                     //SNAPSHOTS DETAILS
+                                       $scope.$broadcast('DetailedSnapshot', {DetailedSnapshot: messageSnapshots}); 
+                                       $scope.generateTable(messageSnapshots);
+
+                                }
+                                if(messageSnapshots[0].detailed==="no"  && messageSnapshots[0].ID_SES===sessionStorage.idSesion){
+                                     //SNAPSHOTS RESULTS
+                                    $scope.$broadcast('SnapshotsResults', {SnapshotsResults: messageSnapshots}); 
+                                }
+                                if((messageSnapshots[0].VERTX_MESSAGE ==="Snapshot added succesfully" || messageSnapshots[0].VERTX_MESSAGE === "Snapshot modified succesfully" || messageSnapshots[0].VERTX_MESSAGE === "Snapshot deleted succesfully") && messageSnapshots[0].ID_SES===sessionStorage.idSesion  && messageSnapshots[0].ID_CON===(actionData.getIdCon()).toString())
+                                    {
+                                         //SNAPSHOTS ADDED
+                                         setError(messageSnapshots[0].VERTX_ERROR,messageSnapshots[0].VERTX_MESSAGE,$scope,ngDialog,$timeout);       
+                                         vertxEventBusService.send('snapshot_actions', {VERTX_ACTION: 'select_all', ID_WORK: sessionStorage.SelectedIdWork, ID_SES:sessionStorage.idSesion, ID_CON:  actionData.setIdCon().toString()});
+                                    }                         
+
+                                if(messageSnapshots[0].VERTX_MESSAGE ==="No snapshots for this work"&& messageSnapshots[0].ID_SES===sessionStorage.idSesion  && messageSnapshots[0].ID_CON===(actionData.getIdCon()).toString())
+                                {
+                                     //NO HAY SNAPSHOTS
+                                    $scope.HaveResults = false;
+                                    $scope.NoSnapshot = true;
+                                    $scope.info = "No snapshots for this work";                                                              
+                                }   
+
+                                else if((messageSnapshots[0].VERTX_MESSAGE ==="OK") && messageSnapshots[0].ID_SES===sessionStorage.idSesion && messageSnapshots[0].ID_CON===(actionData.getIdCon()).toString())
+                                {
+                                    //HAY SNAPSHOTS
+                                    $scope.info = "";
+                                    $scope.HaveResults = true;
+                                    $scope.NoSnapshot = false;             
+                                    $scope.generateTable(messageSnapshots);
+                                }
+                            });
+                            
+                            //BUS QUERY_RESULTS
+                            vertxEventBusService.on('query_results', function(messageQuerys) {
+                                //SI SE HA BORRADO LA QUERY
+                                if(messageQuerys[0].VERTX_MESSAGE === "Query deleted succesfully" && messageQuerys[0].ID_SES===sessionStorage.idSesion && messageQuerys[0].ID_CON===(actionData.getIdCon()).toString()){  
+                                    $scope.Progress = false;
+                                    $scope.Error = messageQuerys[0].VERTX_MESSAGE;
+                                    setError(messageQuerys[0].VERTX_ERROR,messageQuerys[0].VERTX_MESSAGE,$scope,ngDialog,$timeout);
+                                }
+                                //SI NO TIENE QUERYS  
+                                if(messageQuerys[0].VERTX_MESSAGE ==="No querys for this work" && messageQuerys[0].ID_SES===sessionStorage.idSesion && messageQuerys[0].ID_CON===(actionData.getIdCon()).toString())
+                                {
+                                    $scope.HaveResults = false;
+                                    $scope.info="No querys for this work";
+                                }
+                                    
+                                else{
+                                       if(messageQuerys[0].VERTX_MESSAGE !=="No querys for this work" && messageQuerys[0].ID_SES===sessionStorage.idSesion  && messageQuerys[0].ID_CON===(actionData.getIdCon()).toString())
+                                        {
+                                         //SI TIENE QUERYS
+
+                                            if(messageQuerys[0].VERTX_MESSAGE !=="No querys for this work" && messageQuerys[1].detailed ==="no" && messageQuerys[0].ID_SES===sessionStorage.idSesion && messageQuerys[0].ID_CON===(actionData.getIdCon()).toString())
+                                            {
+                                                //LISTADO DE QUERYS
+                                                $scope.generateTable(messageQuerys);
+                                            }
+
+
+                                            if(messageQuerys[0].VERTX_MESSAGE !=="No querys for this work" && messageQuerys[1].detailed ==="yes" && messageQuerys[0].ID_SES===sessionStorage.idSesion && messageQuerys[0].ID_CON===(actionData.getIdCon()).toString())
+                                            {
+                                                //QUERY DETAILS
+                                                $scope.DetailedQuery = messageQuerys[1];
+                                                $scope.SQLidQuery = messageQuerys[1].SQL_ID;
+                                            }    
+                                            if(messageQuerys[0].VERTX_MESSAGE !=="No querys for this work" && messageQuerys[1].BIND_PRECISION  && messageQuerys[0].ID_SES===sessionStorage.idSesion && messageQuerys[0].ID_CON===(actionData.getIdCon()).toString()){
+                                                //QUERY RESULTS
+                                                $scope.QueryResults = messageQuerys;
+                                                $scope.QueryResults.shift();
+                                            }
+                                        }
+
+                                }
+                            });
+          
+          vertxEventBusService.on('query_bg_results', function(BGmessage) {
+                         //BIND GROUPS
+                             $scope.BGResults = BGmessage;
+                             $scope.BgGroupName = BGmessage[1];
+                             $scope.BGdetails = BGmessage[2];
+                            });
+    
+    //REFRESH PAGE
+     $scope.refreshPage = function(){
+             $scope.info="Connecting with server...";
+             $scope.HaveResults = false;
+             switch($location.path()){
+                 case "/home":
+                 $scope.page = "Home";
+                 $scope.helpText="Texto de ayuda de la pagina principal";
+                 break;
+                 
+                 case "/works":
+                 $scope.page = "Works";
+                 $scope.helpText="Texto de ayuda de la pagina Works";
+                 break;
+                 
+                 case "/works/"+ $stateParams.SelectedWorkName:
+                 $scope.page = "Works Details";
+                 $scope.helpText="Texto de ayuda de la pagina Works Details";
+                 break;
+                 
+                 case "/works/"+ $stateParams.SelectedWorkName +"/Snapshots":
+                 $scope.page = "Snapshots";
+                 $scope.helpText="Texto de ayuda de la pagina Snapshots";
+                 break;
+                 
+                 case "/works/"+ $stateParams.SelectedWorkName +"/Snapshots/details/"+ $stateParams.idSnapshot:
+                 
+                 $scope.page = "Snapshots Details";
+                 $scope.helpText="Texto de ayuda de la pagina Snapshots Details";
+                 break;   
+             
+                 case "/works/"+ $stateParams.SelectedWorkName +"/Querys":
+                 $scope.page = "Querys";
+                 $scope.helpText="Texto de ayuda de la pagina Querys";
+                 break;
+                 
+                 case "/works/Reports":
+                 $scope.page = "Reports";
+                 $scope.helpText="Texto de ayuda de la pagina Reports";
+                 break;
+                 
+                 case "/works/"+ $stateParams.SelectedWorkName +"/Querys/details/" + $stateParams.idQuery:
+                 $scope.page = "Query Details";
+                 $scope.helpText="Query details idquery " + $stateParams.idQuery;
+                 break;
+             }
+        };
+    //SI ESTA LOGADO
+        if(sessionStorage.logado)
+        {
+            
+            $scope.user = sessionStorage.user;
+            $scope.repositorio = sessionStorage.repo;
+            $scope.idSesion = sessionStorage.idSesion;
+            $scope.no_logado = false;
+              var hashArray = window.location.hash.split( '/' );
+                if(hashArray[3]){    
+                        sessionStorage.SelectedWorkName = hashArray[2];
+                        $scope.SelectedWorkName = sessionStorage.SelectedWorkName;
+                        $scope.ActiveTab = hashArray[3];          
+                    }
+
+            }
+           else
+            {
+                //SI NO ESTA LOGADO
+                sessionStorage.removeItem("user");
+                sessionStorage.removeItem("logado");
+                $scope.user ="";
+                $scope.password="";
+                $scope.no_logado = true;
+                $scope.logado = false;
+              
+            }
+            
+ }; //acaba el init
+  
+    window.onload = init;
+
+ $scope.generateTable=function(datos){
+        //console.log("llama a generateTable y la tabla es " + table);
+       // console.log("llama a generateTable y los datos son " + JSON.stringify(datos));
+
+                        $scope.sort = function(keyname){
+                            $scope.sortKey = keyname;   //set the sortKey to the param passed
+                            $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+                        };
+                        $scope.Results = datos;
+                        $scope.itemsPerPage = 10;
+                        $scope.HaveResults = true;
+                      //   alert("$scope.WorksPage vale " + $scope.WorksPage);
+                      
+                        if($scope.page==="Home"){
+                            $scope.itemsPerPage = 5;
+                        //    console.log("la pagina es home en generatetable");
+                            $scope.Works = datos;
+                            $scope.sortKey = "ID_WORK"; 
+                        }else if($scope.page === "Works"){
+                           //console.log("la pagina es works en generatetable");
+                            $scope.Works = datos;
+                            $scope.sortKey = "ID_WORK"; 
+                        }else if($scope.page === "Querys"){
+                            //console.log("entra en queryspage en generatetable");
+                            $scope.QueryResults = datos;
+                            $scope.QueryResults.shift(); 
+                            $scope.sortKey = "ID_QUERY"; 
+                        }else if($scope.page === "Snapshots"){
+                            $scope.SnapshotsResults = datos;
+                            $scope.SnapshotsResults.shift(); 
+                            $scope.sortKey = "ID_SNAPSHOT";   
+                        }   
+                        else if($scope.page === "Snapshots Details"){
+                           // console.log("entra en Snapshots Details en generatetable");
+                            $scope.DetailedSnapshot = datos;
+                            $scope.DetailedSnapshot.shift(); 
+                            $scope.sortKey = "STATS_ELAPSED_TIME";   
+                        }
+                         // this should match however many results your API puts on one page
+                       
+                        /*if($scope.page==="Home"){
+                            $scope.itemsPerPage = 5;
+                        }
+                        else{
+                            $scope.itemsPerPage = 10;
+                        }*/
+                      //  console.log("$scope.Results vale" + JSON.stringify($scope.Results));
+                        $scope.numvalues = [3,5,10,20,50];                     
+                        $scope.total = $scope.Results.length;
+                        $scope.currentPage = 1;
+      
+                        $scope.maxRange = ($scope.currentPage * $scope.itemsPerPage);
+                        $scope.minRange = ($scope.maxRange-$scope.itemsPerPage)+1;
+                        if($scope.total < $scope.maxRange){
+                                $scope.maxRange = $scope.total;
+                            }
+                        $scope.refreshItemsPerPage = function(new_value){
+                            $scope.itemsPerPage = new_value;
+                        };
+                        
+
+                        
+
+                             //console.log("currentpage sessionstorage al inicio vale " + $scope.currentPage);
+                             
+                          $scope.setRange= function(currentPage){
+                            $scope.currentPage = currentPage;
+                            sessionStorage.currentPage = $scope.currentPage;
+                            $scope.maxRange = ($scope.currentPage * $scope.itemsPerPage);
+                            $scope.minRange = ($scope.maxRange-$scope.itemsPerPage)+1;
+                            if($scope.total < $scope.maxRange){
+                                $scope.maxRange = $scope.total;
+                            }
+                        };
+                        
+                        
+//                         if(sessionStorage.currentPage && table===sessionStorage.page){
+//                                 $scope.currentPage = sessionStorage.currentPage;
+//                                 console.log("SI esta definido sessionstorage.curentpage " + sessionStorage.currentPage);
+//                                 $scope.setRange($scope.currentPage);
+//                             }
+//                             else{
+//                                 console.log("no esta definido sessionstorage.curentpage");
+//                                 $scope.currentPage = 1;
+//                                 $scope.setRange($scope.currentPage);
+//                             } 
+        
+    }; 
+        
+//    $scope.generateTable=function(table,datos){
+//        console.log("llama a generateTable y la tabla es " + table);
+//       // console.log("llama a generateTable y los datos son " + JSON.stringify(datos));
+//
+//                        $scope.sort = function(keyname){
+//                            $scope.sortKey = keyname;   //set the sortKey to the param passed
+//                            $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+//                        };
+//                        $scope.Results = datos;
+//                        $scope.itemsPerPage = 10;
+//                        $scope.HaveResults = true;
+//                      //   alert("$scope.WorksPage vale " + $scope.WorksPage);
+//                        if($scope.page === "Works"){
+//                           console.log("la pagina es works en generatetable");
+//                            $scope.Works = datos;
+//                            $scope.sortKey = "ID_WORK"; 
+//                        }
+//                       // var url = $location.url();
+//                        if($scope.page === "Querys"){
+//                            console.log("entra en queryspage en generatetable");
+//                            $scope.QueryResults = datos;
+//                            $scope.QueryResults.shift(); 
+//                            $scope.sortKey = "ID_QUERY"; 
+//                        }
+//                        if($scope.page === "Snapshots"){
+//                            $scope.SnapshotsResults = datos;
+//                            $scope.SnapshotsResults.shift(); 
+//                            $scope.sortKey = "ID_SNAPSHOT"; 
+//                           
+//                        }                                 
+//                         // this should match however many results your API puts on one page
+//                        if($scope.page==="Home"){
+//                            $scope.itemsPerPage = 5;
+//                        }
+//                        else{
+//                            $scope.itemsPerPage = 10;
+//                        }
+//                        $scope.numvalues = [3,5,10,20,50];                     
+//                        $scope.total = $scope.Results.length;
+//                        $scope.currentPage = 1;
+//      
+//                        $scope.maxRange = ($scope.currentPage * $scope.itemsPerPage);
+//                        $scope.minRange = ($scope.maxRange-$scope.itemsPerPage)+1;
+//                        if($scope.total < $scope.maxRange){
+//                                $scope.maxRange = $scope.total;
+//                            }
+//                        $scope.refreshItemsPerPage = function(new_value){
+//                            $scope.itemsPerPage = new_value;
+//                        };
+//                        
+//
+//                        
+//
+//                             //console.log("currentpage sessionstorage al inicio vale " + $scope.currentPage);
+//                             
+//                          $scope.setRange= function(currentPage){
+//                            $scope.currentPage = currentPage;
+//                            sessionStorage.currentPage = $scope.currentPage;
+//                            $scope.maxRange = ($scope.currentPage * $scope.itemsPerPage);
+//                            $scope.minRange = ($scope.maxRange-$scope.itemsPerPage)+1;
+//                            if($scope.total < $scope.maxRange){
+//                                $scope.maxRange = $scope.total;
+//                            }
+//                        };
+//                        
+//                        
+////                         if(sessionStorage.currentPage && table===sessionStorage.page){
+////                                 $scope.currentPage = sessionStorage.currentPage;
+////                                 console.log("SI esta definido sessionstorage.curentpage " + sessionStorage.currentPage);
+////                                 $scope.setRange($scope.currentPage);
+////                             }
+////                             else{
+////                                 console.log("no esta definido sessionstorage.curentpage");
+////                                 $scope.currentPage = 1;
+////                                 $scope.setRange($scope.currentPage);
+////                             } 
+//        
+//    };
+
+    $scope.SeeDetails = function(SelectedWork,SelectedSnapshot) {
+        //console.log("seedetails");
+       // console.log(JSON.stringify(SelectedWork));
+        $scope.SelectedIdWork = SelectedWork.ID_WORK;
+        $scope.SelectedWorkName = SelectedWork.WORK_NAME;
+        $scope.SelectedWorkCreated = SelectedWork.CREATED;
+        sessionStorage.SelectedIdWork = $scope.SelectedIdWork;
+        sessionStorage.SelectedWorkName = $scope.SelectedWorkName;
+        sessionStorage.SelectedWorkCreated = $scope.SelectedWorkCreated;
+
+     };
+
+       $scope.goToWorks = function() {
+           $state.go("Works",{});
+
+     };
+               
+                  
+      $scope.oneAtATime = false;
+
+
+      $scope.Snapshots = [
+        {
+          title: 'Snapshot 1',
+          templateUrl: '/templates/SnapshotsDetailsTemplate.html'
+        },
+        {
+          title: 'Snapshot 2',
+          templateUrl: 'templates/SnapshotsDetailsTemplate.html'     
+        }
+      ];
+            
+    $scope.volver = function()
+                {
+                    window.history.go(-1);
+                };
+
+     $interval(function(){
+        
+         $scope.logado = sessionStorage.logado;
+
+        if(sessionStorage.logado)
+        {
+            $scope.user = sessionStorage.user;
+            $scope.no_logado = false;
+        }
+
+      },1000);
+                
+$scope.login = function(){
+
+   var userVal = document.getElementById('user').value;
+    var passwordVal = document.getElementById('password').value;
+    var repoVal = document.getElementById('selectedRepo').value;
+
+    if (vacio(userVal) === false) {
+        $scope.errorLogin = "Please, fill the user";
+    }
+    else if (vacio(passwordVal) === false) {
+        $scope.errorLogin = "Please, fill the password";
+    }
+    else{
+        $scope.infoLogin="Connecting with server...";
+        $scope.errorLogin = "";
+        sessionStorage.logado = true;
+        $scope.logado = true;
+        sessionStorage.user = userVal;
+        sessionStorage.repo = repoVal;
+        sessionStorage.idSesion = uniqueID();
+        $scope.user = sessionStorage.user;
+        $scope.repositorio = sessionStorage.repo;
+        $scope.idSesion = sessionStorage.idSesion;
+        $scope.infoLogin="";
+        $state.go("Home",{});
+        //vertxEventBusService.send('work_actions', {VERTX_ACTION: "select_all", ID_SES:sessionStorage.idSesion, ID_CON:  $scope.actionID().toString()});
+        vertxEventBusService.send('work_actions', {VERTX_ACTION: "select_all", ID_SES:sessionStorage.idSesion, ID_CON:  actionData.setIdCon().toString()});
+    }
+   
+};
+
+                        
+$scope.logout = function(){
+
+   $state.go("Login",{});
+
+};
+
+                        $scope.NewRepo = function(){
+                            $scope.Error ="";
+                             var new_repo_name = myTrim(document.getElementById("REPO_NAME").value);
+                             alert("new_repo_name vale "+new_repo_name + "en el main.");
+                            }; 
+
+//console.log("SelectedWorkSnapshotsPanel vale " + $scope.SelectedWorkSnapshotsPanel);
+//ACABA EL CONTROLADOR DE ANGULAR
+});

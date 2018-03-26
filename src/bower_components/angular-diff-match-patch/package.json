@@ -1,0 +1,58 @@
+{
+  "name": "angular-diff-match-patch",
+  "author": "Adam Weiss <cseadam@gmail.com>",
+  "license": "MIT",
+  "version": "0.6.13",
+  "main": "index.js",
+  "description": "An Angular module to use when dealing with google-diff-match-patch.",
+  "repository": {
+    "url": "https://github.com/amweiss/angular-diff-match-patch.git"
+  },
+  "dependencies": {
+    "angular": "^1.6.9",
+    "diff-match-patch": "^1.*"
+  },
+  "files": [
+    "index.js",
+    "angular-diff-match-patch.js"
+  ],
+  "scripts": {
+    "start": "http-server",
+    "pretest": "npm run lint",
+    "test": "karma start test/karma.conf.js --single-run",
+    "lint": "xo --no-esnext ./angular-diff-match-patch.js ./test/diffmatchpatch-spec.js",
+    "test-watch": "karma start test/karma.conf.js",
+    "release": "standard-version"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.6.9",
+    "http-server": "^0.11",
+    "jasmine-core": "^3.*",
+    "karma": "^2.*",
+    "karma-coverage": "^1.*",
+    "karma-jasmine": "^1.1.1",
+    "karma-junit-reporter": "^1.*",
+    "karma-phantomjs-launcher": "^1.*",
+    "phantomjs-prebuilt": "^2.1.16",
+    "standard-version": "^4.3.0",
+    "xo": "^0.20.3"
+  },
+  "xo": {
+    "esnext": false,
+    "rules": {
+      "capitalized-comments": 0
+    },
+    "env": [
+      "jasmine",
+      "browser",
+      "phantomjs"
+    ],
+    "globals": [
+      "angular",
+      "DIFF_INSERT",
+      "DIFF_DELETE",
+      "DIFF_EQUAL",
+      "diff_match_patch"
+    ]
+  }
+}

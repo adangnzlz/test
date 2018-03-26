@@ -1,515 +1,143 @@
-<html>
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+
+    <meta charset="iso-8859-1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GPSql</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/fontawesome/fontawesome.css" rel="stylesheet">
+
+
+    <!-- Custom CSS -->
+    <link href="dist/css/sb-admin-2.css" rel="stylesheet">
+    <!--<link href="../dist/css/animateLogin.css" rel="stylesheet">-->
+    <!-- Custom Fonts -->
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="dist/css/ejecuciones.css" rel="stylesheet" type="text/css">
+    <!-- <link href="/css/styleMenu.css" rel="stylesheet" type="text/css"> -->
+    <!--<link href="/css/sliderStyle.css" rel="stylesheet" type="text/css">-->
+    <link href="css/metisMenu.min.css" rel="stylesheet" type="text/css">
+    <link href="dist/css/ngDialog.css" rel="stylesheet" type="text/css">
+    <link href="dist/css/ngDialog-theme-default.css" rel="stylesheet" type="text/css">
+    <script src="js/libs/jquery.min.js"></script>
+    <!--<script src="/js/jquery.flexdatalist.js"></script>-->
+    <!-- originalmente <script src="/js/jssor.slider-25.0.7.min.js" type="text/javascript"></script> -->
+    <!--<script src="/js/indexMenu.js"></script> -->
+
+    <!--<link href="/css/jquery.flexdatalist.css" rel="stylesheet" type="text/css">-->
+</head>
+
+<body ng-controller="EjecucionesCtrl as ec">
+    <nav class="navbar navbar-default navbartop" role="navigation" style="margin-bottom: 0;" data-drag="false" data-jqyoui-options>
+        <div class="navbar-header">
+            <div class="leftNav">
+                <img src="img/logoGPSOS.png" style="margin-left:1%; float:left; height:50px;" />
+                <img src="img/iconoRendimiento.png" style="margin-left:1%; float:left; margin-top:-3px;" />
+                <span style="color: #337ab7;font-size: 17px; margin-left:15px; float:left; margin-top:30px;">
+                    <span class="negrita">GPS Q</span>uery
+                    <span class="negrita">P</span>erformance</span>
+            </div>
+            <div class="rightNav">
+                <div class="rightMenu" ng-if="logado">
+                    <div ng-if="anteriorLogin">
+                        <a ui-sref="Home({})" class="glyphicon glyphicon-home" aria-hidden="false"></a>
+                        <span class="glyphicon glyphicon-off" aria-hidden="true" ng-click="logout()"></span>
+                    </div>
+                    <div ng-if="!anteriorLogin">
+                        <a ui-sref="Home({})" class="glyphicon glyphicon-home" aria-hidden="false"></a>
+                        <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true" ng-click="volver()"></span>
+                        <span class="glyphicon glyphicon-off" aria-hidden="true" ng-click="logout()"></span>
+                    </div>
+                </div>
+                <div class="rightMenu" ng-if="!logado">
+                    <span class="negrita">GPS_QP v.1.0 </span>
+                    <br/>
+                    <span class="subtitle">Tools for
+                        <span class="negrita">DBA</span>s</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="ejecuciones">
+        <div class="container">
+            <h1>Datos del informe</h1>
+            <div class="data-report col-md-12 row">
+                <span class="label">
+                    <a>
+                        <i class="fa fa-calendar"></i>
+                    </a>
+                    <span>{{ec.data.HEADER.DATE}}</span>
+                    <span class="bold">{{ec.data.HEADER.COMPARE_METHOD}}</span>
+                </span>
+                <div class="fields" ng-repeat="item in ::ec.data.HEADER.WORK">
+                    <p class="bold col-sm-3 col-xs-6">{{item[0]}}:</p>
+                    <p class="col-sm-3 col-xs-6">{{item[1]}}</p>
+                </div>
+            </div>
+            <div id="header-chart-1" class="header-chart col-md-4" style="height: 250px;">COINCIDENT OK</div>
+            <div id="header-chart-2" class="header-chart col-md-4" style="height: 250px;">TOTAL SNAPSHOTS</div>
+            <div id="header-chart-3" class="header-chart col-md-4" style="height: 250px;">OK/WRONG</div>
+            <div id="header-chart-4" class="header-chart col-md-4" style="height: 200px;">ERROR BY TYPE</div>
+            <div id="header-chart-5" class="header-chart col-md-4" style="height: 200px;">NO COINCIDENT</div>
+        </div>
+    </section>
+
 
-<body>
-
-    <!-- user interface begins -->
-
-    <div>
-        <label>Before:</label>
-        <br />
-        <textarea id="textareaBefore" cols="80" rows="10">
-This is not a test.
-This is line 2.
-        </textarea>
-    </div>
-
-    <div>
-        <label>After:</label>
-        <br />
-        <textarea id="textareaAfter" cols="80" rows="10">
-This is totally a test.
-This is line 2.
-        </textarea>
-    </div>
-
-    <button id="buttonCompare" onclick="buttonCompareClicked();">Compare</button>
-
-    <div>
-        <label>Differences:</label>
-        <br />
-        <div id="textareaDifferences" style="border:1px solid;height:200px"></div>
-    </div>
-
-    <!-- user interface ends -->
-
-    <script type="text/javascript">
-
-        // events
-
-        function buttonCompareClicked() {
-            var textBefore = document.getElementById("textareaBefore").value;
-            var textAfter = document.getElementById("textareaAfter").value;
-
-            var differences = new TextDifferencer().findDifferencesBetweenStrings
-                (
-                textBefore,
-                textAfter
-                );
-
-            var differencesAsString = differences.toString();
-
-            var textareaDifferences = document.getElementById
-                (
-                "textareaDifferences"
-                );
-            textareaDifferences.innerHTML = differencesAsString;
-
-        }
-
-        // extensions
-
-        function ArrayExtensions() {
-            // extension class
-        }
-        {
-            Array.prototype.insertElementAt = function (element, index) {
-                this.splice(index, 0, element);
-            }
-
-            Array.prototype.insertElementsAt = function (elements, index) {
-                for (var i = 0; i < elements.length; i++) {
-                    this.splice(index + i, 0, elements[i]);
-                }
-            }
-
-            Array.prototype.removeAt = function (index) {
-                this.splice(index, 1);
-            }
-        }
-
-        // classes
-
-        function TextDifferencer() {
-            // do nothing
-        }
-        {
-            TextDifferencer.prototype.findDifferencesBetweenStrings = function (string0, string1) {
-                var lengthOfShorterString =
-                    (string0.length <= string1.length ? string0.length : string1.length);
-
-                var numberOfExtremes = 2;
-                var passagePairsMatchingAtExtremes = [];
-
-                for (var e = 0; e < numberOfExtremes; e++) {
-                    var lengthOfMatchingSubstring = 0;
-
-                    for (var i = 0; i < lengthOfShorterString; i++) {
-                        var offsetForString0 = (e == 0 ? i : string0.length - i - 1);
-                        var offsetForString1 = (e == 0 ? i : string1.length - i - 1);
-
-                        var charFromString0 = string0[offsetForString0];
-                        var charFromString1 = string1[offsetForString1];
-
-                        if (charFromString0 != charFromString1) {
-                            lengthOfMatchingSubstring = i;
-                            break;
-                        }
-                    }
-
-                    var matchingSubstringAtExtreme;
-
-                    if (e == 0) {
-                        matchingSubstringAtExtreme = string0.substr(0, lengthOfMatchingSubstring);
-                        string0 = string0.substr(lengthOfMatchingSubstring);
-                        string1 = string1.substr(lengthOfMatchingSubstring);
-                    } else // if (e == 1)
-                    {
-                        matchingSubstringAtExtreme = string0.substr(string0.length - lengthOfMatchingSubstring);
-                        string0 = string0.substr(0, string0.length - lengthOfMatchingSubstring);
-                        string1 = string1.substr(0, string1.length - lengthOfMatchingSubstring);
-                    }
-
-                    var passagePairMatchingAtExtreme = new TextPassagePair
-                        (
-                        true, // doPassagesMatch
-                        [
-                            new TextPassage(matchingSubstringAtExtreme),
-                            new TextPassage(matchingSubstringAtExtreme),
-                        ]
-                        );
-
-                    passagePairsMatchingAtExtremes.push
-                        (
-                        passagePairMatchingAtExtreme
-                        );
-                }
-
-                var passagePairsAll = [];
-
-                var passagePairsMatching = this.findPassagePairsMatchingBetweenStrings
-                    (
-                    string0, string1, [0, 0]
-                    );
-
-                this.insertPassagePairsDifferentBetweenMatching
-                    (
-                    string0,
-                    string1,
-                    passagePairsMatching,
-                    passagePairsAll
-                    );
-
-                for (var e = 0; e < passagePairsMatchingAtExtremes.length; e++) {
-                    var passagePairMatchingAtExtreme = passagePairsMatchingAtExtremes[e];
-                    passagePairsAll.insertElementAt
-                        (
-                        passagePairMatchingAtExtreme,
-                        (e == 0 ? 0 : passagePairsAll.length)
-                        );
-                }
-
-                var returnValue = new TextDifferences(passagePairsAll);
-
-                return returnValue;
-            }
-
-            TextDifferencer.prototype.findPassagePairsMatchingBetweenStrings = function
-                (
-                string0, string1, positionOffsets
-                ) {
-                var passagePairsMatching = [];
-
-                var longestCommonPassagePair = this.findLongestCommonPassagePair
-                    (
-                    string0,
-                    string1
-                    );
-
-                var longestCommonPassageText = longestCommonPassagePair.passages[0].text;
-                var lengthOfCommonPassage = longestCommonPassageText.length;
-
-                if (lengthOfCommonPassage == 0) {
-                    return passagePairsMatching;
-                }
-
-                passagePairsMatching.push(longestCommonPassagePair);
-
-                var passages = longestCommonPassagePair.passages;
-                var passage0 = passages[0];
-                var passage1 = passages[1];
-
-                var passagePairsMatchingBeforeCommon = this.findPassagePairsMatchingBetweenStrings
-                    (
-                    string0.substr(0, passage0.position),
-                    string1.substr(0, passage1.position),
-                    [
-                        positionOffsets[0],
-                        positionOffsets[1]
-                    ]
-                    );
-
-                var passagePairsMatchingAfterCommon = this.findPassagePairsMatchingBetweenStrings
-                    (
-                    string0.substr
-                        (
-                        passage0.position + lengthOfCommonPassage
-                        ),
-                    string1.substr
-                        (
-                        passage1.position + lengthOfCommonPassage
-                        ),
-                    [
-                        positionOffsets[0]
-                        + passage0.position
-                        + lengthOfCommonPassage,
-
-                        positionOffsets[1]
-                        + passage1.position
-                        + lengthOfCommonPassage
-                    ]
-                    );
-
-                var passagePairSetsMatchingBeforeAndAfter =
-                    [
-                        passagePairsMatchingBeforeCommon,
-                        passagePairsMatchingAfterCommon
-                    ];
-
-                for (var i = 0; i < passagePairSetsMatchingBeforeAndAfter.length; i++) {
-                    var passagePairsToInsert = passagePairSetsMatchingBeforeAndAfter[i];
-                    passagePairsMatching.insertElementsAt
-                        (
-                        passagePairsToInsert,
-                        (i == 0 ? 0 : passagePairsMatching.length)
-                        );
-                }
-
-                for (var i = 0; i < longestCommonPassagePair.passages.length; i++) {
-                    var passage = longestCommonPassagePair.passages[i];
-                    passage.position += positionOffsets[i];
-                }
-
-                return passagePairsMatching;
-            }
-
-            TextDifferencer.prototype.findLongestCommonPassagePair = function (string0, string1) {
-                var passage0 = new TextPassage("", 0);
-                var passage1 = new TextPassage("", 0);
-
-                var returnValue = new TextPassagePair
-                    (
-                    true, // doPassagesMatch
-                    [
-                        passage0, passage1
-                    ]
-                    );
-
-                var lengthOfString0 = string0.length;
-                var lengthOfString1 = string1.length;
-
-                var substringLengthsForRow = null;
-                var substringLengthsForRowPrev;
-
-                var lengthOfLongestCommonSubstringSoFar = 0;
-                var longestCommonSubstringsSoFar = "";
-                var cellIndex = 0;
-
-                // Build a table whose y-axis is chars from string0,
-                // and whose x-axis is chars from string1.
-                // Put length of the longest substring in each cell.
-
-                for (var i = 0; i < lengthOfString0; i++) {
-                    substringLengthsForRowPrev = substringLengthsForRow;
-                    substringLengthsForRow = [];
-
-                    for (var j = 0; j < lengthOfString1; j++) {
-                        if (string0[i] != string1[j]) {
-                            substringLengthsForRow[j] = 0;
-                        }
-                        else {
-                            var cellValue;
-
-                            if (i == 0 || j == 0) {
-                                // first row or column
-                                cellValue = 1;
-                            }
-                            else {
-                                // Copy cell to upper left, add 1.
-                                cellValue = substringLengthsForRowPrev[j - 1] + 1;
-                            }
-
-                            substringLengthsForRow[j] = cellValue;
-
-                            if (cellValue > lengthOfLongestCommonSubstringSoFar) {
-                                lengthOfLongestCommonSubstringSoFar = cellValue;
-                                var startIndex = i - lengthOfLongestCommonSubstringSoFar + 1;
-                                var longestCommonSubstringSoFar = string0.substring // not "substr"!
-                                    (
-                                    startIndex,
-                                    i + 1
-                                    );
-
-                                passage0.text = longestCommonSubstringSoFar;
-                                passage0.position = startIndex;
-
-                                passage1.text = longestCommonSubstringSoFar;
-                                passage1.position = j - lengthOfLongestCommonSubstringSoFar + 1;
-                            }
-                        }
-                    }
-                }
-
-                return returnValue;
-            }
-
-            TextDifferencer.prototype.insertPassagePairsDifferentBetweenMatching = function
-                (
-                string0,
-                string1,
-                passagePairsToInsertBetween,
-                passagePairsAll
-                ) {
-                passagePairsToInsertBetween.insertElementAt
-                    (
-                    new TextPassagePair
-                        (
-                        true, // doPassagesMatch
-                        [
-                            new TextPassage("", 0),
-                            new TextPassage("", 0)
-                        ]
-                        ),
-                    0
-                    );
-
-                passagePairsToInsertBetween.push
-                    (
-                    new TextPassagePair
-                        (
-                        true, // doPassagesMatch
-                        [
-                            new TextPassage("", string0.length),
-                            new TextPassage("", string1.length)
-                        ]
-                        )
-                    );
-
-                var pMax = passagePairsToInsertBetween.length - 1;
-
-                for (var p = 0; p < pMax; p++) {
-                    passagePairToInsertAfter = passagePairsToInsertBetween[p];
-                    passagePairToInsertBefore = passagePairsToInsertBetween[p + 1];
-
-                    this.buildAndInsertPassagePairBetweenExisting
-                        (
-                        string0,
-                        string1,
-                        passagePairToInsertBefore,
-                        passagePairToInsertAfter,
-                        passagePairsAll
-                        );
-
-                    passagePairsAll.push(passagePairToInsertBefore);
-                }
-
-                var indexOfPassagePairFinal = passagePairsAll.length - 1;
-
-                var passagePairFinal = passagePairsAll[indexOfPassagePairFinal];
-
-                if
-                (
-                    passagePairFinal.doPassagesMatch == true
-                    && passagePairFinal.passages[0].text.length == 0
-                ) {
-                    passagePairsAll.removeAt(indexOfPassagePairFinal, 1);
-                }
-            }
-
-            TextDifferencer.prototype.buildAndInsertPassagePairBetweenExisting = function
-                (
-                string0,
-                string1,
-                passagePairToInsertBefore,
-                passagePairToInsertAfter,
-                passagePairsAll
-                ) {
-                var lengthOfPassageToInsertAfter = passagePairToInsertAfter.passages[0].text.length;
-
-                var positionsForPassagePairDifferent =
-                    [
-                        [
-                            passagePairToInsertAfter.passages[0].position
-                            + lengthOfPassageToInsertAfter,
-
-                            passagePairToInsertAfter.passages[1].position
-                            + lengthOfPassageToInsertAfter
-                        ],
-                        [
-                            passagePairToInsertBefore.passages[0].position,
-                            passagePairToInsertBefore.passages[1].position
-                        ]
-                    ];
-
-                var passageToInsert0 = new TextPassage
-                    (
-                    string0.substring // not "substr"!
-                        (
-                        positionsForPassagePairDifferent[0][0],
-                        positionsForPassagePairDifferent[1][0]
-                        ),
-                    positionsForPassagePairDifferent[0][0]
-                    );
-
-                var passageToInsert1 = new TextPassage
-                    (
-                    string1.substring  // not "substr"!
-                        (
-                        positionsForPassagePairDifferent[0][1],
-                        positionsForPassagePairDifferent[1][1]
-                        ),
-                    positionsForPassagePairDifferent[0][1]
-                    );
-
-                var passagePairToInsert = new TextPassagePair
-                    (
-                    false, // doPassagesMatch
-                    [
-                        passageToInsert0,
-                        passageToInsert1
-                    ]
-                    );
-
-                if
-                (
-                    passagePairToInsert.passages[0].text.length > 0
-                    || passagePairToInsert.passages[1].text.length > 0
-                ) {
-                    passagePairsAll.push(passagePairToInsert);
-                }
-
-            }
-        }
-
-        function TextDifferences(passagePairs) {
-            this.passagePairs = passagePairs;
-        }
-        {
-            // instance methods
-
-            TextDifferences.prototype.toString = function () {
-                var returnValue = "";
-
-                for (var p = 0; p < this.passagePairs.length; p++) {
-                    var passagePair = this.passagePairs[p];
-                    var passagePairAsString = passagePair.toString();
-
-                    returnValue += passagePairAsString;
-                }
-
-                return returnValue;
-            }
-
-        }
-
-        function TextPassage(text, position) {
-            this.text = text;
-            this.position = position;
-        }
-
-        function TextPassagePair(doPassagesMatch, passages) {
-            this.doPassagesMatch = doPassagesMatch;
-            this.passages = passages;
-        }
-        {
-            TextPassagePair.prototype.toString = function () {
-                var returnValue = "";
-
-                if (this.doPassagesMatch == true) {
-                    returnValue = this.passages[0].text;
-                    returnValue = this.escapeStringForHTML(returnValue);
-                }
-                else {
-                    returnValue += "<mark style='background-color:red'>";
-                    returnValue += this.escapeStringForHTML(this.passages[0].text);
-                    returnValue += "</mark><mark style='background-color:yellow'>";
-                    returnValue += this.escapeStringForHTML(this.passages[1].text);
-                    returnValue += "</mark>";
-
-                }
-
-                return returnValue;
-            }
-
-            TextPassagePair.prototype.escapeStringForHTML = function (stringToEscape) {
-                var returnValue = stringToEscape.replace
-                    (
-                    "&", "&amp;"
-                    ).replace
-                    (
-                    "<", "&lt;"
-                    ).replace
-                    (
-                    ">", "&gt;"
-                    ).replace
-                    (
-                    "\n", "<br />"
-                    );
-
-                return returnValue;
-            }
-        }
-
-    </script>
+    <footer>
+        <a href="http://www.gpsos.es/" target="_blank" style="margin-right:25px;">www.gpsos.es</a>
+    </footer>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="js/libs/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+    <script src="js/libs/angular/angular.min.js"></script>
+    <script src="js/ocLazyLoad.js"></script>
+    <script src="js/libs/ui-bootstrap.min.js"></script>
+    <script src="js/libs/angular/angular-animate.min.js"></script>
+    <script src="js/libs/angular/angular-sanitize.min.js"></script>
+    <script src="js/libs/angular-dragdrop.js"></script>
+    <script src="js/libs/dirPagination.js"></script>
+    <script src="js/libs/sockjs.min.js"></script>
+    <script src="js/libs/vertxbus-3.5.0.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-vertxbus/6.3.0/angular-vertxbus.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="js/libs/angular/angular-ui-router.min.js"></script>
+    <script src="js/libs/defiant-latest.min.js"></script>
+    <script src="js/libs/Chart.min.js"></script>
+    <script src="js/libs/angular-chart.min.js"></script>
+    <script src="js/libs/ui-bootstrap-tpls-0.13.0.min.js"></script>
+    <script src="js/libs/sockjs.min.js"></script>
+    <script src="js/libs/ngDialog.js"></script>
+    <script src="js/app.js"></script>
+
+
+    <!-- New imports -->
+    <script src="js/controllers/EjecucionesController.js"></script>
+    <script src="services/EjecucionesService.js"></script>
+    <script src="js/factories/ChartFactory.js"></script>
 </body>
 
 </html>

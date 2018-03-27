@@ -2,7 +2,6 @@ angular.module('app').controller("EjecucionesCtrl", function ($scope, $statePara
 
     var ec = this;
 
-
     ec.formatData = function (data) {
         var data = data.REPORT;
         data.HEADER = data.HEADER;
@@ -17,37 +16,39 @@ angular.module('app').controller("EjecucionesCtrl", function ($scope, $statePara
     $scope.right = "asdfasfsadf";
 
     ec.createChartHeader1 = function (data) {
-        var series = chartFactory.formatChartHeader1(data);
+        var colorA = '#337ab7';
+        var colorB = '#434348';
+        var series = chartFactory.formatChartHeader1(data, colorA, colorB);
+        var style = data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM > 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+        var color = data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM > 0 ? 'green' : 'red';
         Highcharts.chart('header-chart-1', {
             chart: { type: 'column' },
             title: { text: 'COINCIDENT OK' },
             xAxis: {
                 categories: ['IMPROVED', 'UNCHANGUED', 'REGRESSED'], title: {
                     text: '<p>Total number of querys : <b>' + data.FOOT.COINCIDENT_OK.COINCIDENT_OK_NUMBER +
-                        '</b></p><p>Total sum : <b>' + data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM +
-                        '</b></p>', useHTML: true
+                        '</b></i></p><p>Total sum : <b class="' + color + '">' + data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM +
+                        '</b><i class="fa ' + style + '"></p>', useHTML: true
                 }
             },
-
             yAxis: { title: { text: 'Number of querys' } },
-
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.x + '</b><br/>' +
-                        this.series.name + ': ' + this.y + '<br/>' +
-                        'Total: ' + this.point.stackTotal;
-                }
-            },
-
+            tooltip: { formatter: function () { return '<b>' + this.x + '</b><br/>' + this.series.name + ': ' + this.y + '<br/>' + 'Total: ' + this.point.stackTotal; } },
             plotOptions: {
                 column: {
-                    stacking: 'normal'
+                    stacking: 'normal', cursor: 'pointer',
+                    events: {
+                        click: function (event) { }
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                ec.onClickChart1(this, colorA, colorB);
+                            }
+                        }
+                    }
                 }
             },
-
             series: series
-
-
         });
     }
     ec.createChartHeader2 = function (data) {
@@ -115,10 +116,30 @@ angular.module('app').controller("EjecucionesCtrl", function ($scope, $statePara
         });
     }
 
+    ec.onClickChart1 = function (event, colorA, colorB) {
+        console.log(event.category);
+        var plan = event.color === colorA ? 'Same plan' : 'Dif plan';
+        switch (event.category) {
+            case 'IMPROVED':
+                ec.querys = ec.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY.slice(0, 10);
+                console.log(ec.querys[0].sql_id.text);
+                break;
+            case 'UNCHANGUED':
+                ec.querys = ec.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY.slice(0, 10);
+                break;
+            case 'REGRESSED':
+                ec.querys = ec.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY.slice(0, 10);
+                break;
 
+            default:
+                break;
+        }
+
+    }
 
     ejecucionesService.getData().success(function (data) {
         ec.data = ec.formatData(data)
+        ec.querys = ec.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY.slice(0, 20);
         ec.createChartHeader1(ec.data);
         ec.createChartHeader2(ec.data);
         ec.createChartHeader3(ec.data);

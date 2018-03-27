@@ -2,17 +2,19 @@
 
 angular.module('app').factory('chartFactory', function ($http) {
     var factory = {};
-    factory.formatChartHeader1 = function (data) {
+    factory.formatChartHeader1 = function (data, colorA, colorB) {
         return [{
             name: 'Same plan',
             data: [data.FOOT.COINCIDENT_OK.COINCIDENT_OK_IMPROVE_SAMEPLAN,
             data.FOOT.COINCIDENT_OK.COINCIDENT_OK_EQUAL_SAMEPLAN,
-                data.FOOT.COINCIDENT_OK.COINCIDENT_OK_REGRET_SAMEPLAN]
+                data.FOOT.COINCIDENT_OK.COINCIDENT_OK_REGRET_SAMEPLAN],
+            color: colorA
         }, {
             name: 'Dif plan',
                 data: [data.FOOT.COINCIDENT_OK.COINCIDENT_OK_IMPROVE_DIFPLAN,
                 data.FOOT.COINCIDENT_OK.COINCIDENT_OK_EQUAL_DIFPLAN,
-                data.FOOT.COINCIDENT_OK.COINCIDENT_OK_REGRET_DIFPLAN]
+                data.FOOT.COINCIDENT_OK.COINCIDENT_OK_REGRET_DIFPLAN],
+                color: colorB
         }];
     };
     factory.formatChartHeader2 = function (data) {

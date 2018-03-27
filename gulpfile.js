@@ -24,6 +24,8 @@ gulp.task('source', function () {
         .pipe(gulp.dest('./static/services'));
     gulp.src('./src/data/**/*')
         .pipe(gulp.dest('./static/data'));
+    gulp.src('./src/ejecuciones/**/*')
+        .pipe(gulp.dest('./static/ejecuciones'));
 });
 
 

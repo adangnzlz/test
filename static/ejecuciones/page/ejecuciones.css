@@ -87,6 +87,23 @@ section#ejecuciones {
     color: black;
 }
 
-#ejecuciones pre{
+#ejecuciones .header-chart div>span>p>b.green {
+    color: green;
+}
+#ejecuciones .header-chart div>span>p>b.red {
+    color: red;
+}
+
+#ejecuciones i.fa.fa-arrow-up {
+    color: green;
+    margin-left: 4px;
+}
+
+#ejecuciones i.fa.fa-arrow-down {
+    color: red;
+    margin-left: 4px;
+}
+
+#ejecuciones pre {
     font-size: 10px;
 }

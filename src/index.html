@@ -30,7 +30,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link href="css/style.css" rel="stylesheet" type="text/css">
-    <link href="dist/css/ejecuciones.css" rel="stylesheet" type="text/css">
+    <link href="ejecuciones/page/ejecuciones.css" rel="stylesheet" type="text/css">
     <!-- <link href="/css/styleMenu.css" rel="stylesheet" type="text/css"> -->
     <!--<link href="/css/sliderStyle.css" rel="stylesheet" type="text/css">-->
     <link href="css/metisMenu.min.css" rel="stylesheet" type="text/css">
@@ -44,7 +44,7 @@
     <!--<link href="/css/jquery.flexdatalist.css" rel="stylesheet" type="text/css">-->
 </head>
 
-<body ng-controller="EjecucionesCtrl as ec">
+<body>
     <nav class="navbar navbar-default navbartop" role="navigation" style="margin-bottom: 0;" data-drag="false" data-jqyoui-options>
         <div class="navbar-header">
             <div class="leftNav">
@@ -75,34 +75,7 @@
             </div>
         </div>
     </nav>
-
-    <section id="ejecuciones">
-        <div class="container">
-            <h1>Datos del informe</h1>
-            <div class="data-report col-md-12 row">
-                <span class="label">
-                    <a>
-                        <i class="fa fa-calendar"></i>
-                    </a>
-                    <span>{{ec.data.HEADER.DATE}}</span>
-                    <span class="bold">{{ec.data.HEADER.COMPARE_METHOD}}</span>
-                </span>
-                <div class="fields" ng-repeat="item in ::ec.data.HEADER.WORK">
-                    <p class="bold col-sm-3 col-xs-6">{{item[0]}}:</p>
-                    <p class="col-sm-3 col-xs-6">{{item[1]}}</p>
-                </div>
-            </div>
-            <div id="header-chart-1" class="header-chart col-md-4" style="height: 350px;">COINCIDENT OK</div>
-            <div id="header-chart-2" class="header-chart col-md-4" style="height: 350px;">TOTAL SNAPSHOTS</div>
-            <div id="header-chart-3" class="header-chart col-md-4" style="height: 350px;">OK/WRONG</div>
-            <div id="header-chart-4" class="header-chart col-md-4" style="height: 300px;">ERROR BY TYPE</div>
-            <div id="header-chart-5" class="header-chart col-md-4" style="height: 300px;">NO COINCIDENT</div>
-
-        </div>
-        <!-- <pre id="display"></pre> -->
-    </section>
-
-
+    <ejecuciones></ejecuciones>
     <footer>
         <a href="http://www.gpsos.es/" target="_blank" style="margin-right:25px;">www.gpsos.es</a>
     </footer>
@@ -138,9 +111,11 @@
     <script src="js/app.js"></script>
 
     <!-- New imports -->
-    <script src="js/controllers/EjecucionesController.js"></script>
-    <script src="services/EjecucionesService.js"></script>
-    <script src="js/factories/ChartFactory.js"></script>
+    <script src="ejecuciones/page/ejecuciones.js"></script>
+    <script src="ejecuciones/directives/header-info/header-info.js"></script>
+    <script src="ejecuciones/directives/header-charts/header-charts.js"></script>
+    <script src="ejecuciones/services/EjecucionesService.js"></script>
+    <script src="ejecuciones/factories/ChartFactory.js"></script>
     <script src="js/libs/diff.min.js"></script>
 </body>
 

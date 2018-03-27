@@ -1,5 +1,5 @@
 
-angular.module('app').service('ejecucionesService', ['$http', function ($http) {
+angular.module('app').service('executionsService', ['$http', function ($http) {
     return {
         getData: function () {
 

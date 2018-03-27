@@ -1,4 +1,4 @@
-angular.module('app').controller("EjecucionesCtrl", function ($scope, $stateParams, $state, ejecucionesService, chartFactory) {
+angular.module('app').controller("ExecutionsCtrl", function ($scope, $stateParams, $state, ExecutionsService, chartFactory) {
 
     var ec = this;
 
@@ -137,7 +137,7 @@ angular.module('app').controller("EjecucionesCtrl", function ($scope, $statePara
 
     }
 
-    ejecucionesService.getData().success(function (data) {
+    executionsService.getData().success(function (data) {
         ec.data = ec.formatData(data)
         ec.querys = ec.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY.slice(0, 20);
         ec.createChartHeader1(ec.data);

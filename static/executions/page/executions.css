@@ -1,56 +1,56 @@
-section#ejecuciones {
+section#executions {
     padding: 50px;
     text-align: center;
 }
 
 @media (max-width: 768px) {
-    section#ejecuciones {
+    section#executions {
         padding: 15px;
     }
 }
 
-#ejecuciones .container {
+#executions .container {
     border-radius: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
-#ejecuciones .label {
+#executions .label {
     font-size: 17px;
     color: black;
     text-align: left;
     padding: 20px 0px;
 }
 
-#ejecuciones .fields {
+#executions .fields {
     margin: 20px 0px;
 }
 
-#ejecuciones .label span {
+#executions .label span {
     font-weight: 300;
     font-size: 17px;
 }
 
-#ejecuciones .label span.bold {
+#executions .label span.bold {
     font-weight: 700;
 }
 
-#ejecuciones .label i {
+#executions .label i {
     font-weight: 300;
     font-size: 17px;
 }
 
-#ejecuciones .label a:hover {
+#executions .label a:hover {
     text-decoration: none;
     color: #337ab7;
 }
 
-#ejecuciones h1 {
+#executions h1 {
     margin-bottom: 15px;
     text-align: left;
 }
 
-#ejecuciones .data-report {
+#executions .data-report {
     margin-top: 25px;
     margin-bottom: 25px;
     padding: 0px 50px;
@@ -58,12 +58,12 @@ section#ejecuciones {
 }
 
 @media (max-width: 768px) {
-    #ejecuciones .data-report {
+    #executions .data-report {
         padding: 0px 25px;
     }
 }
 
-#ejecuciones .data-report p {
+#executions .data-report p {
     display: inline-block;
     text-align: left;
     font-size: 15px;
@@ -73,37 +73,37 @@ section#ejecuciones {
 }
 
 @media (max-width: 768px) {
-    #ejecuciones .data-report p {
+    #executions .data-report p {
         font-size: 12px;
     }
 }
 
-#ejecuciones .data-report p.bold {
+#executions .data-report p.bold {
     font-weight: 700;
 }
 
-#ejecuciones .header-chart div>span>p {
+#executions .header-chart div>span>p {
     margin-top: 10px;
     color: black;
 }
 
-#ejecuciones .header-chart div>span>p>b.green {
+#executions .header-chart div>span>p>b.green {
     color: green;
 }
-#ejecuciones .header-chart div>span>p>b.red {
+#executions .header-chart div>span>p>b.red {
     color: red;
 }
 
-#ejecuciones i.fa.fa-arrow-up {
+#executions i.fa.fa-arrow-up {
     color: green;
     margin-left: 4px;
 }
 
-#ejecuciones i.fa.fa-arrow-down {
+#executions i.fa.fa-arrow-down {
     color: red;
     margin-left: 4px;
 }
 
-#ejecuciones pre {
+#executions pre {
     font-size: 10px;
 }

@@ -1,18 +1,18 @@
-angular.module('app').directive('ejecuciones', function () {
+angular.module('app').directive('executions', function () {
     return {
         bindToController: true,
-        controller: EjecucionesController,
+        controller: ExecutionsController,
         controllerAs: 'ec',
         restrict: 'E',
         scope: {
             controller: '='
         },
         templateUrl: function (elem, attr) {
-            return './ejecuciones/page/ejecuciones.html';
+            return './executions/page/executions.html';
         }
     };
 
-    function EjecucionesController($scope, $stateParams, $state) {
+    function ExecutionsController($scope, $stateParams, $state) {
 
         var ec = this;
 

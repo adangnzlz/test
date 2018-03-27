@@ -1,17 +1,17 @@
 angular.module('app').directive('headerInfo', function () {
     return {
         bindToController: true,
-        controller: HeaderInfoEjecuciones,
+        controller: HeaderInfoExecutions,
         controllerAs: 'hic',
         restrict: 'E',
         scope: {
         },
         templateUrl: function (elem, attr) {
-            return './ejecuciones/directives/header-info/header-info.html';
+            return './executions/directives/header-info/header-info.html';
         }
     };
 
-    function HeaderInfoEjecuciones($scope, $stateParams, $state, ejecucionesService, chartFactory) {
+    function HeaderInfoExecutions($scope, $stateParams, $state, executionsService, chartFactory) {
 
         var hic = this;
         hic.formatData = function (data) {
@@ -22,7 +22,7 @@ angular.module('app').directive('headerInfo', function () {
             data.FOOT = data.FOOT;
             return data
         }
-        ejecucionesService.getData().success(function (data) {
+        executionsService.getData().success(function (data) {
             hic.data = hic.formatData(data)
             hic.querys = hic.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY.slice(0, 20);
         });

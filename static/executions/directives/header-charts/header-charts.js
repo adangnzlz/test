@@ -7,11 +7,11 @@ angular.module('app').directive('headerCharts', function () {
         scope: {
         },
         templateUrl: function (elem, attr) {
-            return './ejecuciones/directives/header-charts/header-charts.html';
+            return './executions/directives/header-charts/header-charts.html';
         }
     };
 
-    function HeaderChartsController($scope, $stateParams, $state, ejecucionesService, chartFactory) {
+    function HeaderChartsController($scope, $stateParams, $state, executionsService, chartFactory) {
 
         var hcc = this;
 
@@ -145,7 +145,7 @@ angular.module('app').directive('headerCharts', function () {
             return data
         }
       
-        ejecucionesService.getData().success(function (data) {
+        executionsService.getData().success(function (data) {
             hcc.data = hcc.formatData(data)
             hcc.createChartHeader1(hcc.data);
             hcc.createChartHeader2(hcc.data);

@@ -42,6 +42,11 @@
     <!--<script src="/js/indexMenu.js"></script> -->
 
     <!--<link href="/css/jquery.flexdatalist.css" rel="stylesheet" type="text/css">-->
+
+    <script src="https://unpkg.com/ace-diff@^2.0.0"></script>
+
+    <!-- optionally include CSS, or use your own -->
+    <link href="https://unpkg.com/ace-diff@^2.0.0/dist/ace-diff.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -75,7 +80,19 @@
             </div>
         </div>
     </nav>
-    <executions></executions>
+    <!-- <executions></executions> -->
+    <div class="acediff"></div>
+    <script>
+        var differ = new AceDiff({
+            element: '.acediff',
+            left: {
+                content: 'your first file content here',
+            },
+            right: {
+                content: 'your second file content here',
+            },
+        });
+    </script>
     <footer>
         <a href="http://www.gpsos.es/" target="_blank" style="margin-right:25px;">www.gpsos.es</a>
     </footer>

@@ -142,7 +142,7 @@ angular.module('app').directive('headerCharts', function () {
         }
 
         hcc.onClickChart1 = function (event, colorA, colorB) {
-            var plan = event.color === colorA ? 'Same plan' : 'Dif plan';
+            var plan = event.color === colorA ? 'Same plan' : 'Diff plan';
             switch (event.category) {
                 case 'Improved':
                     hcc.querys = hcc.getQuerys(hcc.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY, 'IMPROVED', plan)
@@ -189,10 +189,12 @@ angular.module('app').directive('headerCharts', function () {
                     result = false;
                     return (item.sql_id.binds.PLAN ? item.sql_id.binds.PLAN.SAME_PLAN === 'Y' : false);
                 });
-            } else {
+            } else if (planType === 'Diff plan'){
                 querysResult = querys.filter((item) => {
                     return item.sql_id.binds.PLAN ? item.sql_id.binds.PLAN.SAME_PLAN !== 'Y' : false;
                 });
+            }else{
+                querysResult = querys;
             }
             querysResult = querysResult.filter((item) => {
                 result = false;

@@ -9,6 +9,7 @@ var app = angular.module('app',[
     'ngSanitize',
     'ngDragDrop',
     'ngAnimate',
+    'ngLodash',
     'oc.lazyLoad']);
 
 angular.module('app').config(function(vertxEventBusProvider) {

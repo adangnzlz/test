@@ -7,30 +7,34 @@ angular.module('app').factory('chartFactory', function ($http) {
             name: 'Same plan',
             data: [data.FOOT.COINCIDENT_OK.COINCIDENT_OK_IMPROVE_SAMEPLAN,
             data.FOOT.COINCIDENT_OK.COINCIDENT_OK_EQUAL_SAMEPLAN,
-                data.FOOT.COINCIDENT_OK.COINCIDENT_OK_REGRET_SAMEPLAN],
+            data.FOOT.COINCIDENT_OK.COINCIDENT_OK_REGRET_SAMEPLAN],
             color: colorA
         }, {
             name: 'Dif plan',
-                data: [data.FOOT.COINCIDENT_OK.COINCIDENT_OK_IMPROVE_DIFPLAN,
-                data.FOOT.COINCIDENT_OK.COINCIDENT_OK_EQUAL_DIFPLAN,
-                data.FOOT.COINCIDENT_OK.COINCIDENT_OK_REGRET_DIFPLAN],
-                color: colorB
+            data: [data.FOOT.COINCIDENT_OK.COINCIDENT_OK_IMPROVE_DIFPLAN,
+            data.FOOT.COINCIDENT_OK.COINCIDENT_OK_EQUAL_DIFPLAN,
+            data.FOOT.COINCIDENT_OK.COINCIDENT_OK_REGRET_DIFPLAN],
+            color: colorB
         }];
     };
     factory.formatChartHeader2 = function (data) {
+        var colorA = '#337ab7';
+        var colorB = '#f0ad4e';
         return [{
-            name: 'Querys', colorByPoint: true,
             data: [{
-                name: 'TOTAL SNAP_1',
-                y: 24000
+                name: 'Total snap 1',
+                y: 24000,
+                color: colorA
             }, {
-                name: 'TOTAL SNAP_2',
-                y: 25000
+                name: 'Total snap 2',
+                y: 25000,
+                color: colorB
             }]
         }];
     };
 
     factory.formatChartHeader3 = function (data) {
+
         var wrong = data.FOOT.NOCOINCIDENT_SQLID.NOCOINCIDENT_SQLID_SNAP2 +
             data.FOOT.NOCOINCIDENT_SQLID.NOCOINCIDENT_SQLID_SNAP2 +
             data.FOOT.COINCIDENT_ERROR.COINCIDENT_ERROR_SNAP2 +
@@ -46,46 +50,54 @@ angular.module('app').factory('chartFactory', function ($http) {
                 y: data.FOOT.COINCIDENT_OK.COINCIDENT_OK_NUMBER,
                 color: 'green'
             }, {
-                name: 'WRONG',
+                name: 'Wrong',
                 y: wrong,
                 color: 'red'
             }]
         }];
     };
     factory.formatChartHeader4 = function (data) {
-
+        var colorA = '#337ab7';
         return [{
-            name: 'Querys', colorByPoint: true,
             data: [{
-                name: 'SNAP_1',
-                y: data.FOOT.COINCIDENT_ERROR.COINCIDENT_ERROR_SNAP1
+                name: 'Snap 1',
+                y: data.FOOT.COINCIDENT_ERROR.COINCIDENT_ERROR_SNAP1,
+                color: colorA
             }, {
-                name: 'SNAP_2',
-                y: data.FOOT.COINCIDENT_ERROR.COINCIDENT_ERROR_SNAP2
+                name: 'Snap 2',
+                y: data.FOOT.COINCIDENT_ERROR.COINCIDENT_ERROR_SNAP2,
+                color: colorA
             }, {
-                name: 'BOTH',
-                y: data.FOOT.COINCIDENT_ERROR.COINCIDENT_ERROR_BOTH
+                name: 'Both',
+                y: data.FOOT.COINCIDENT_ERROR.COINCIDENT_ERROR_BOTH,
+                color: colorA
             }]
         }];
     };
     factory.formatChartHeader5 = function (data) {
-
+        var colorA = '#337ab7';
         return [{
             name: 'Querys', colorByPoint: true,
             data: [{
-                name: 'SQLID_SNAP_1',
-                y: data.FOOT.NOCOINCIDENT_SQLID.NOCOINCIDENT_SQLID_SNAP1
+                name: 'Sqlid snap 1',
+                y: data.FOOT.NOCOINCIDENT_SQLID.NOCOINCIDENT_SQLID_SNAP1,
+                color: colorA
             }, {
-                name: 'SQLID_SNAP_2',
-                y: data.FOOT.NOCOINCIDENT_SQLID.NOCOINCIDENT_SQLID_SNAP2
+                name: 'Sqlid snap 2',
+                y: data.FOOT.NOCOINCIDENT_SQLID.NOCOINCIDENT_SQLID_SNAP2,
+                color: colorA
             }, {
-                name: 'BIND_SNAP_1',
-                y: data.FOOT.NOCOINCIDENT_BIND.NOCOINCIDENT_BIND_SNAP1
+                name: 'Bind snap 1',
+                y: data.FOOT.NOCOINCIDENT_BIND.NOCOINCIDENT_BIND_SNAP1,
+                color: colorA
             }, {
-                name: 'BIND_SNAP_2',
-                y: data.FOOT.NOCOINCIDENT_BIND.NOCOINCIDENT_BIND_SNAP2
+                name: 'Bind snap 2',
+                y: data.FOOT.NOCOINCIDENT_BIND.NOCOINCIDENT_BIND_SNAP2,
+                color: colorA
             }]
         }];
     };
+
+
     return factory;
 });

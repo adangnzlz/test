@@ -4,12 +4,13 @@
             "DATE": "04/01/2018 11:31:24",
             "COMPARE_METHOD": "BUFFER",
             "WORK": {
-                "snapshot1_queries": 123,
-                "snapshot2_name": "Test Execute",
                 "work_id": 1,
+                "snapshot1_queries": 123,
                 "work_name": "TEST1",
-                "work_description": "test 1",
                 "snapshot1_name": "Test AWR ORCL2",
+                "work_description": "test 1",
+                "snapshot2_name": "Test Execute",
+                "other_field": "sample other field",
                 "snapshot2_queries": 123
             }
         },
@@ -29,358 +30,6 @@
                     "QUERY": [
                         {
                             "sql_id": {
-                                "binds": {
-                                    "STATS": {
-                                        "stats_snap2": {
-                                            "DISK_READS": 0,
-                                            "BUFFER_GETS": 6,
-                                            "EXECUTIONS": 1,
-                                            "OPTIMIZER_COST": 1,
-                                            "ELAPSED_TIME": 1907,
-                                            "ERROR": null,
-                                            "CPU_TIME": 2000,
-                                            "ROWS_PROCESSED": 1
-                                        },
-                                        "stats_compare": {
-                                            "impact_sql": -20,
-                                            "impact_work": 0
-                                        },
-                                        "stats_snap1": {
-                                            "DISK_READS": 0,
-                                            "BUFFER_GETS": 30,
-                                            "EXECUTIONS": 6,
-                                            "OPTIMIZER_COST": 1,
-                                            "ELAPSED_TIME": 120421,
-                                            "ERROR": null,
-                                            "CPU_TIME": 999,
-                                            "ROWS_PROCESSED": 6
-                                        }
-                                    },
-                                    "bind_children": {
-                                        "bind_name": ":B1",
-                                        "bind_value": "APEX_MAIL_QUEUE_LOCK",
-                                        "bind_datatype": "VARCHAR2(32)",
-                                        "bind_captured": "YES"
-                                    },
-                                    "PLAN": {
-                                        "plan_snapshot1": {
-                                            "plan_lines": {
-                                                "plan_lines": [
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "| Id    | Operation                                                                                            | Name                          | Rows           | Bytes           | Cost            | Time     |",
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "|    1  | SELECT STATEMENT                                                                                     |                               |                |                 |               1 |          |",
-                                                    "|    2  | FOR UPDATE                                                                                           |                               |                |                 |                 |          |",
-                                                    "|    3  |   TABLE ACCESS (BY INDEX ROWID)                                                                      | DBMS_LOCK_ALLOCATED           |              1 |              54 |               1 | 00:00:01 |",
-                                                    "|    4* |     INDEX (UNIQUE SCAN)                                                                              | SYS_C003509                   |              1 |                 |               1 | 00:00:01 |",
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "",
-                                                    "Access Predicates",
-                                                    "-----------------",
-                                                    "4* \"NAME\"=:B1",
-                                                    "",
-                                                    "Filter predicates",
-                                                    "-----------------"
-                                                ]
-                                            },
-                                            "captured": "Y",
-                                            "plan_hash": 2554735264
-                                        },
-                                        "SAME_PLAN": "Y",
-                                        "plan_snapshot2": {
-                                            "plan_lines": {},
-                                            "captured": "Y",
-                                            "plan_hash": 2554735264
-                                        }
-                                    },
-                                    "content": 53
-                                },
-                                "text": "SELECT LOCKID FROM DBMS_LOCK_ALLOCATED WHERE NAME = :B1 FOR UPDATE",
-                                "content": "19x1189chq3xd",
-                                "command": "SELECT",
-                                "parser_schema": "SYS"
-                            }
-                        },
-                        {
-                            "sql_id": {
-                                "binds": {
-                                    "STATS": {
-                                        "stats_snap2": {
-                                            "DISK_READS": 0,
-                                            "BUFFER_GETS": 7,
-                                            "EXECUTIONS": 1,
-                                            "OPTIMIZER_COST": 5,
-                                            "ELAPSED_TIME": 14907,
-                                            "ERROR": null,
-                                            "CPU_TIME": 14998,
-                                            "ROWS_PROCESSED": 1
-                                        },
-                                        "stats_compare": {
-                                            "impact_sql": -0.69,
-                                            "impact_work": 0
-                                        },
-                                        "stats_snap1": {
-                                            "DISK_READS": 2,
-                                            "BUFFER_GETS": 8467,
-                                            "EXECUTIONS": 1218,
-                                            "OPTIMIZER_COST": 6,
-                                            "ELAPSED_TIME": 318306,
-                                            "ERROR": null,
-                                            "CPU_TIME": 293961,
-                                            "ROWS_PROCESSED": 1673
-                                        }
-                                    },
-                                    "bind_children": [
-                                        {
-                                            "bind_name": ":1",
-                                            "bind_value": 6571,
-                                            "bind_datatype": "NUMBER",
-                                            "bind_captured": "YES"
-                                        },
-                                        {
-                                            "bind_name": ":1",
-                                            "bind_value": 6571,
-                                            "bind_datatype": "NUMBER",
-                                            "bind_captured": "YES"
-                                        }
-                                    ],
-                                    "PLAN": {
-                                        "plan_snapshot1": {
-                                            "plan_lines": {},
-                                            "captured": "Y",
-                                            "plan_hash": 3992920156
-                                        },
-                                        "SAME_PLAN": "N",
-                                        "plan_snapshot2": {
-                                            "captured": "NO",
-                                            "plan_hash": 3992920156
-                                        }
-                                    },
-                                    "content": 97
-                                },
-                                "text": "select i.obj#,i.ts#,i.file#,i.block#,i.intcols,i.type#,i.flags,i.property,i.pctfree$,i.initrans,i.maxtrans,i.blevel,i.leafcnt,i.distkey,i.lblkkey,i.dblkkey,i.clufac,i.cols,i.analyzetime,i.samplesize,i.dataobj#,nvl(i.degree,1),nvl(i.instances,1),i.rowcnt,mod(i.pctthres$,256),i.indmethod#,i.trunccnt,nvl(c.unicols,0),nvl(c.deferrable#+c.valid#,0),nvl(i.spare1,i.intcols),i.spare4,i.spare2,i.spare6,decode(i.pctthres$,null,null,mod(trunc(i.pctthres$/256),256)),ist.cachedblk,ist.cachehit,ist.logicalread from ind$ i, ind_stats$ ist, (select enabled, min(cols) unicols,min(to_number(bitand(defer,1))) deferrable#,min(to_number(bitand(defer,4))) valid# from cdef$ where obj#=:1 and enabled > 1 group by enabled) c where i.obj#=c.enabled(+) and i.obj# = ist.obj#(+) and i.bo#=:1 order by i.obj#",
-                                "content": "7ng34ruy5awxq",
-                                "command": "SELECT",
-                                "parser_schema": "SYS"
-                            }
-                        },
-                        {
-                            "sql_id": {
-                                "binds": {
-                                    "STATS": {
-                                        "stats_snap2": {
-                                            "DISK_READS": 0,
-                                            "BUFFER_GETS": 0,
-                                            "EXECUTIONS": 1,
-                                            "OPTIMIZER_COST": 1,
-                                            "ELAPSED_TIME": 4547,
-                                            "ERROR": null,
-                                            "CPU_TIME": 3000,
-                                            "ROWS_PROCESSED": 30
-                                        },
-                                        "stats_compare": {
-                                            "impact_sql": 0,
-                                            "impact_work": 0
-                                        },
-                                        "stats_snap1": {
-                                            "DISK_READS": 0,
-                                            "BUFFER_GETS": 0,
-                                            "EXECUTIONS": 1078,
-                                            "OPTIMIZER_COST": 0,
-                                            "ELAPSED_TIME": 992755,
-                                            "ERROR": null,
-                                            "CPU_TIME": 947861,
-                                            "ROWS_PROCESSED": 23716
-                                        }
-                                    },
-                                    "PLAN": {
-                                        "plan_snapshot1": {
-                                            "plan_lines": {
-                                                "plan_lines": [
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "| Id    | Operation                                                                                            | Name                          | Rows           | Bytes           | Cost            | Time     |",
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "|    1  | SELECT STATEMENT                                                                                     |                               |                |                 |                 |          |",
-                                                    "|    2* | FIXED TABLE (FULL)                                                                                   | X$KGLSIM                      |                |                 |                 |          |",
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "",
-                                                    "Access Predicates",
-                                                    "-----------------",
-                                                    "",
-                                                    "Filter predicates",
-                                                    "-----------------",
-                                                    "2* \"INST_ID\"=USERENV('INSTANCE')"
-                                                ]
-                                            },
-                                            "captured": "Y",
-                                            "plan_hash": 2909482823
-                                        },
-                                        "SAME_PLAN": "Y",
-                                        "plan_snapshot2": {
-                                            "plan_lines": {},
-                                            "captured": "Y",
-                                            "plan_hash": 2909482823
-                                        }
-                                    }
-                                },
-                                "text": "select shared_pool_size_for_estimate s,          shared_pool_size_factor * 100 f,          estd_lc_load_time l, 0             from v$shared_pool_advice",
-                                "content": "772s25v1y0x8k",
-                                "command": "SELECT",
-                                "parser_schema": "SYS"
-                            }
-                        },
-                        {
-                            "sql_id": {
-                                "binds": {
-                                    "STATS": {
-                                        "stats_snap2": {
-                                            "DISK_READS": 0,
-                                            "BUFFER_GETS": 6,
-                                            "EXECUTIONS": 1,
-                                            "OPTIMIZER_COST": 7,
-                                            "ELAPSED_TIME": 3516,
-                                            "ERROR": null,
-                                            "CPU_TIME": 3999,
-                                            "ROWS_PROCESSED": 2
-                                        },
-                                        "stats_compare": {
-                                            "impact_sql": -56.21,
-                                            "impact_work": 0
-                                        },
-                                        "stats_snap1": {
-                                            "DISK_READS": 0,
-                                            "BUFFER_GETS": 13312,
-                                            "EXECUTIONS": 3466,
-                                            "OPTIMIZER_COST": 9,
-                                            "ELAPSED_TIME": 364081,
-                                            "ERROR": null,
-                                            "CPU_TIME": 333961,
-                                            "ROWS_PROCESSED": 5280
-                                        }
-                                    },
-                                    "bind_children": {
-                                        "bind_name": ":1",
-                                        "bind_value": 29,
-                                        "bind_datatype": "NUMBER",
-                                        "bind_captured": "YES"
-                                    },
-                                    "PLAN": {
-                                        "plan_snapshot1": {
-                                            "plan_lines": {
-                                                "plan_lines": [
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "| Id    | Operation                                                                                            | Name                          | Rows           | Bytes           | Cost            | Time     |",
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "|    1  | SELECT STATEMENT                                                                                     |                               |                |                 |               8 |          |",
-                                                    "|    2* | CONNECT BY (WITH FILTERING)                                                                          |                               |                |                 |                 |          |",
-                                                    "|    3* |   INDEX (RANGE SCAN)                                                                                 | I_SYSAUTH1                    |              2 |              16 |               2 | 00:00:01 |",
-                                                    "|    4  |   NESTED LOOPS                                                                                       |                               |              4 |              84 |               4 | 00:00:01 |",
-                                                    "|    5  |     CONNECT BY PUMP                                                                                  |                               |                |                 |                 |          |",
-                                                    "|    6* |     INDEX (RANGE SCAN)                                                                               | I_SYSAUTH1                    |              2 |              16 |               1 | 00:00:01 |",
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "",
-                                                    "Access Predicates",
-                                                    "-----------------",
-                                                    "2* \"GRANTEE#\"=PRIOR NULL",
-                                                    "3* \"GRANTEE#\"=:1 AND \"PRIVILEGE#\">0",
-                                                    "6* \"GRANTEE#\"=\"connect$_by$_pump$_002\".\"prior privilege# \" AND \"PRIVILEGE#\">0",
-                                                    "",
-                                                    "Filter predicates",
-                                                    "-----------------"
-                                                ]
-                                            },
-                                            "captured": "Y",
-                                            "plan_hash": 3332340200
-                                        },
-                                        "SAME_PLAN": "Y",
-                                        "plan_snapshot2": {
-                                            "plan_lines": {},
-                                            "captured": "Y",
-                                            "plan_hash": 3332340200
-                                        }
-                                    },
-                                    "content": 22
-                                },
-                                "text": "select /*+ connect_by_filtering */ privilege#,level from sysauth$ connect by grantee#=prior privilege# and privilege#>0 start with grantee#=:1 and privilege#>0",
-                                "content": "cm5vu20fhtnq1",
-                                "command": "SELECT",
-                                "parser_schema": "SYS"
-                            }
-                        },
-                        {
-                            "sql_id": {
-                                "binds": {
-                                    "STATS": {
-                                        "stats_snap2": {
-                                            "DISK_READS": 0,
-                                            "BUFFER_GETS": 2,
-                                            "EXECUTIONS": 1,
-                                            "OPTIMIZER_COST": 2,
-                                            "ELAPSED_TIME": 1771,
-                                            "ERROR": null,
-                                            "CPU_TIME": 1000,
-                                            "ROWS_PROCESSED": 1
-                                        },
-                                        "stats_compare": {
-                                            "impact_sql": 0,
-                                            "impact_work": 0
-                                        },
-                                        "stats_snap1": {
-                                            "DISK_READS": 0,
-                                            "BUFFER_GETS": 1320,
-                                            "EXECUTIONS": 660,
-                                            "OPTIMIZER_COST": 2,
-                                            "ELAPSED_TIME": 96536,
-                                            "ERROR": null,
-                                            "CPU_TIME": 110982,
-                                            "ROWS_PROCESSED": 660
-                                        }
-                                    },
-                                    "bind_children": {
-                                        "bind_name": ":1",
-                                        "bind_value": "SYS$USERS",
-                                        "bind_datatype": "VARCHAR2(32)",
-                                        "bind_captured": "YES"
-                                    },
-                                    "PLAN": {
-                                        "plan_snapshot1": {
-                                            "plan_lines": {
-                                                "plan_lines": [
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "| Id    | Operation                                                                                            | Name                          | Rows           | Bytes           | Cost            | Time     |",
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "|    1  | SELECT STATEMENT                                                                                     |                               |                |                 |               2 |          |",
-                                                    "|    2* | TABLE ACCESS (FULL)                                                                                  | SERVICE$                      |              1 |              46 |               2 | 00:00:01 |",
-                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
-                                                    "",
-                                                    "Access Predicates",
-                                                    "-----------------",
-                                                    "",
-                                                    "Filter predicates",
-                                                    "-----------------",
-                                                    "2* \"NAME\"=:1"
-                                                ]
-                                            },
-                                            "captured": "Y",
-                                            "plan_hash": 395742348
-                                        },
-                                        "SAME_PLAN": "Y",
-                                        "plan_snapshot2": {
-                                            "plan_lines": {},
-                                            "captured": "Y",
-                                            "plan_hash": 395742348
-                                        }
-                                    },
-                                    "content": 77
-                                },
-                                "text": "select decode(failover_method, NULL, 0 , 'BASIC', 1, 'PRECONNECT', 2 , 'PREPARSE', 4 , 0), decode(failover_type, NULL, 1 , 'NONE', 1 , 'SESSION', 2, 'SELECT',  4, 1), failover_retries, failover_delay, flags from service$ where name = :1",
-                                "content": "5ur69atw3vfhj",
-                                "command": "SELECT",
-                                "parser_schema": "SYS"
-                            }
-                        },
-                        {
-                            "sql_id": {
                                 "binds": [
                                     {
                                         "STATS": {
@@ -390,7 +39,7 @@
                                                 "EXECUTIONS": 1,
                                                 "OPTIMIZER_COST": 1,
                                                 "ELAPSED_TIME": 2908,
-                                                "ERROR": null,
+                                                "ERROR": "Ejemplo de error",
                                                 "CPU_TIME": 1999,
                                                 "ROWS_PROCESSED": 0
                                             },
@@ -865,6 +514,358 @@
                                 ],
                                 "text": "SELECT DISTINCT e.instance_number  FROM    WRM$_SNAP_ERROR e ,  X$KEHSQT x  WHERE e.table_name = x.name   AND  x.ver_type = :edge  AND  x.critical = 'Y'   AND  e.dbid = :dbid  AND e.instance_number = :inst  AND e.snap_id IN (:bid, :eid)",
                                 "content": "aca4xvmz0rzup",
+                                "command": "SELECT",
+                                "parser_schema": "SYS"
+                            }
+                        },
+                        {
+                            "sql_id": {
+                                "binds": {
+                                    "STATS": {
+                                        "stats_snap2": {
+                                            "DISK_READS": 0,
+                                            "BUFFER_GETS": 6,
+                                            "EXECUTIONS": 1,
+                                            "OPTIMIZER_COST": 1,
+                                            "ELAPSED_TIME": 1907,
+                                            "ERROR": null,
+                                            "CPU_TIME": 2000,
+                                            "ROWS_PROCESSED": 1
+                                        },
+                                        "stats_compare": {
+                                            "impact_sql": -20,
+                                            "impact_work": 0
+                                        },
+                                        "stats_snap1": {
+                                            "DISK_READS": 0,
+                                            "BUFFER_GETS": 30,
+                                            "EXECUTIONS": 6,
+                                            "OPTIMIZER_COST": 1,
+                                            "ELAPSED_TIME": 120421,
+                                            "ERROR": null,
+                                            "CPU_TIME": 999,
+                                            "ROWS_PROCESSED": 6
+                                        }
+                                    },
+                                    "bind_children": {
+                                        "bind_name": ":B1",
+                                        "bind_value": "APEX_MAIL_QUEUE_LOCK",
+                                        "bind_datatype": "VARCHAR2(32)",
+                                        "bind_captured": "YES"
+                                    },
+                                    "PLAN": {
+                                        "plan_snapshot1": {
+                                            "plan_lines": {
+                                                "plan_lines": [
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "| Id    | Operation                                                                                            | Name                          | Rows           | Bytes           | Cost            | Time     |",
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "|    1  | SELECT STATEMENT                                                                                     |                               |                |                 |               1 |          |",
+                                                    "|    2  | FOR UPDATE                                                                                           |                               |                |                 |                 |          |",
+                                                    "|    3  |   TABLE ACCESS (BY INDEX ROWID)                                                                      | DBMS_LOCK_ALLOCATED           |              1 |              54 |               1 | 00:00:01 |",
+                                                    "|    4* |     INDEX (UNIQUE SCAN)                                                                              | SYS_C003509                   |              1 |                 |               1 | 00:00:01 |",
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "",
+                                                    "Access Predicates",
+                                                    "-----------------",
+                                                    "4* \"NAME\"=:B1",
+                                                    "",
+                                                    "Filter predicates",
+                                                    "-----------------"
+                                                ]
+                                            },
+                                            "captured": "Y",
+                                            "plan_hash": 2554735264
+                                        },
+                                        "SAME_PLAN": "Y",
+                                        "plan_snapshot2": {
+                                            "plan_lines": {},
+                                            "captured": "Y",
+                                            "plan_hash": 2554735264
+                                        }
+                                    },
+                                    "content": 53
+                                },
+                                "text": "SELECT LOCKID FROM DBMS_LOCK_ALLOCATED WHERE NAME = :B1 FOR UPDATE",
+                                "content": "19x1189chq3xd",
+                                "command": "SELECT",
+                                "parser_schema": "SYS"
+                            }
+                        },
+                        {
+                            "sql_id": {
+                                "binds": {
+                                    "STATS": {
+                                        "stats_snap2": {
+                                            "DISK_READS": 0,
+                                            "BUFFER_GETS": 7,
+                                            "EXECUTIONS": 1,
+                                            "OPTIMIZER_COST": 5,
+                                            "ELAPSED_TIME": 14907,
+                                            "ERROR": null,
+                                            "CPU_TIME": 14998,
+                                            "ROWS_PROCESSED": 1
+                                        },
+                                        "stats_compare": {
+                                            "impact_sql": -0.69,
+                                            "impact_work": 0
+                                        },
+                                        "stats_snap1": {
+                                            "DISK_READS": 2,
+                                            "BUFFER_GETS": 8467,
+                                            "EXECUTIONS": 1218,
+                                            "OPTIMIZER_COST": 6,
+                                            "ELAPSED_TIME": 318306,
+                                            "ERROR": null,
+                                            "CPU_TIME": 293961,
+                                            "ROWS_PROCESSED": 1673
+                                        }
+                                    },
+                                    "bind_children": [
+                                        {
+                                            "bind_name": ":1",
+                                            "bind_value": 6571,
+                                            "bind_datatype": "NUMBER",
+                                            "bind_captured": "YES"
+                                        },
+                                        {
+                                            "bind_name": ":1",
+                                            "bind_value": 6571,
+                                            "bind_datatype": "NUMBER",
+                                            "bind_captured": "YES"
+                                        }
+                                    ],
+                                    "PLAN": {
+                                        "plan_snapshot1": {
+                                            "plan_lines": {},
+                                            "captured": "Y",
+                                            "plan_hash": 3992920156
+                                        },
+                                        "SAME_PLAN": "N",
+                                        "plan_snapshot2": {
+                                            "captured": "NO",
+                                            "plan_hash": 3992920156
+                                        }
+                                    },
+                                    "content": 97
+                                },
+                                "text": "select i.obj#,i.ts#,i.file#,i.block#,i.intcols,i.type#,i.flags,i.property,i.pctfree$,i.initrans,i.maxtrans,i.blevel,i.leafcnt,i.distkey,i.lblkkey,i.dblkkey,i.clufac,i.cols,i.analyzetime,i.samplesize,i.dataobj#,nvl(i.degree,1),nvl(i.instances,1),i.rowcnt,mod(i.pctthres$,256),i.indmethod#,i.trunccnt,nvl(c.unicols,0),nvl(c.deferrable#+c.valid#,0),nvl(i.spare1,i.intcols),i.spare4,i.spare2,i.spare6,decode(i.pctthres$,null,null,mod(trunc(i.pctthres$/256),256)),ist.cachedblk,ist.cachehit,ist.logicalread from ind$ i, ind_stats$ ist, (select enabled, min(cols) unicols,min(to_number(bitand(defer,1))) deferrable#,min(to_number(bitand(defer,4))) valid# from cdef$ where obj#=:1 and enabled > 1 group by enabled) c where i.obj#=c.enabled(+) and i.obj# = ist.obj#(+) and i.bo#=:1 order by i.obj#",
+                                "content": "7ng34ruy5awxq",
+                                "command": "SELECT",
+                                "parser_schema": "SYS"
+                            }
+                        },
+                        {
+                            "sql_id": {
+                                "binds": {
+                                    "STATS": {
+                                        "stats_snap2": {
+                                            "DISK_READS": 0,
+                                            "BUFFER_GETS": 0,
+                                            "EXECUTIONS": 1,
+                                            "OPTIMIZER_COST": 1,
+                                            "ELAPSED_TIME": 4547,
+                                            "ERROR": null,
+                                            "CPU_TIME": 3000,
+                                            "ROWS_PROCESSED": 30
+                                        },
+                                        "stats_compare": {
+                                            "impact_sql": 0,
+                                            "impact_work": 0
+                                        },
+                                        "stats_snap1": {
+                                            "DISK_READS": 0,
+                                            "BUFFER_GETS": 0,
+                                            "EXECUTIONS": 1078,
+                                            "OPTIMIZER_COST": 0,
+                                            "ELAPSED_TIME": 992755,
+                                            "ERROR": null,
+                                            "CPU_TIME": 947861,
+                                            "ROWS_PROCESSED": 23716
+                                        }
+                                    },
+                                    "PLAN": {
+                                        "plan_snapshot1": {
+                                            "plan_lines": {
+                                                "plan_lines": [
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "| Id    | Operation                                                                                            | Name                          | Rows           | Bytes           | Cost            | Time     |",
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "|    1  | SELECT STATEMENT                                                                                     |                               |                |                 |                 |          |",
+                                                    "|    2* | FIXED TABLE (FULL)                                                                                   | X$KGLSIM                      |                |                 |                 |          |",
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "",
+                                                    "Access Predicates",
+                                                    "-----------------",
+                                                    "",
+                                                    "Filter predicates",
+                                                    "-----------------",
+                                                    "2* \"INST_ID\"=USERENV('INSTANCE')"
+                                                ]
+                                            },
+                                            "captured": "Y",
+                                            "plan_hash": 2909482823
+                                        },
+                                        "SAME_PLAN": "Y",
+                                        "plan_snapshot2": {
+                                            "plan_lines": {},
+                                            "captured": "Y",
+                                            "plan_hash": 2909482823
+                                        }
+                                    }
+                                },
+                                "text": "select shared_pool_size_for_estimate s,          shared_pool_size_factor * 100 f,          estd_lc_load_time l, 0             from v$shared_pool_advice",
+                                "content": "772s25v1y0x8k",
+                                "command": "SELECT",
+                                "parser_schema": "SYS"
+                            }
+                        },
+                        {
+                            "sql_id": {
+                                "binds": {
+                                    "STATS": {
+                                        "stats_snap2": {
+                                            "DISK_READS": 0,
+                                            "BUFFER_GETS": 6,
+                                            "EXECUTIONS": 1,
+                                            "OPTIMIZER_COST": 7,
+                                            "ELAPSED_TIME": 3516,
+                                            "ERROR": null,
+                                            "CPU_TIME": 3999,
+                                            "ROWS_PROCESSED": 2
+                                        },
+                                        "stats_compare": {
+                                            "impact_sql": -56.21,
+                                            "impact_work": 0
+                                        },
+                                        "stats_snap1": {
+                                            "DISK_READS": 0,
+                                            "BUFFER_GETS": 13312,
+                                            "EXECUTIONS": 3466,
+                                            "OPTIMIZER_COST": 9,
+                                            "ELAPSED_TIME": 364081,
+                                            "ERROR": null,
+                                            "CPU_TIME": 333961,
+                                            "ROWS_PROCESSED": 5280
+                                        }
+                                    },
+                                    "bind_children": {
+                                        "bind_name": ":1",
+                                        "bind_value": 29,
+                                        "bind_datatype": "NUMBER",
+                                        "bind_captured": "YES"
+                                    },
+                                    "PLAN": {
+                                        "plan_snapshot1": {
+                                            "plan_lines": {
+                                                "plan_lines": [
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "| Id    | Operation                                                                                            | Name                          | Rows           | Bytes           | Cost            | Time     |",
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "|    1  | SELECT STATEMENT                                                                                     |                               |                |                 |               8 |          |",
+                                                    "|    2* | CONNECT BY (WITH FILTERING)                                                                          |                               |                |                 |                 |          |",
+                                                    "|    3* |   INDEX (RANGE SCAN)                                                                                 | I_SYSAUTH1                    |              2 |              16 |               2 | 00:00:01 |",
+                                                    "|    4  |   NESTED LOOPS                                                                                       |                               |              4 |              84 |               4 | 00:00:01 |",
+                                                    "|    5  |     CONNECT BY PUMP                                                                                  |                               |                |                 |                 |          |",
+                                                    "|    6* |     INDEX (RANGE SCAN)                                                                               | I_SYSAUTH1                    |              2 |              16 |               1 | 00:00:01 |",
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "",
+                                                    "Access Predicates",
+                                                    "-----------------",
+                                                    "2* \"GRANTEE#\"=PRIOR NULL",
+                                                    "3* \"GRANTEE#\"=:1 AND \"PRIVILEGE#\">0",
+                                                    "6* \"GRANTEE#\"=\"connect$_by$_pump$_002\".\"prior privilege# \" AND \"PRIVILEGE#\">0",
+                                                    "",
+                                                    "Filter predicates",
+                                                    "-----------------"
+                                                ]
+                                            },
+                                            "captured": "Y",
+                                            "plan_hash": 3332340200
+                                        },
+                                        "SAME_PLAN": "Y",
+                                        "plan_snapshot2": {
+                                            "plan_lines": {},
+                                            "captured": "Y",
+                                            "plan_hash": 3332340200
+                                        }
+                                    },
+                                    "content": 22
+                                },
+                                "text": "select /*+ connect_by_filtering */ privilege#,level from sysauth$ connect by grantee#=prior privilege# and privilege#>0 start with grantee#=:1 and privilege#>0",
+                                "content": "cm5vu20fhtnq1",
+                                "command": "SELECT",
+                                "parser_schema": "SYS"
+                            }
+                        },
+                        {
+                            "sql_id": {
+                                "binds": {
+                                    "STATS": {
+                                        "stats_snap2": {
+                                            "DISK_READS": 0,
+                                            "BUFFER_GETS": 2,
+                                            "EXECUTIONS": 1,
+                                            "OPTIMIZER_COST": 2,
+                                            "ELAPSED_TIME": 1771,
+                                            "ERROR": null,
+                                            "CPU_TIME": 1000,
+                                            "ROWS_PROCESSED": 1
+                                        },
+                                        "stats_compare": {
+                                            "impact_sql": 0,
+                                            "impact_work": 0
+                                        },
+                                        "stats_snap1": {
+                                            "DISK_READS": 0,
+                                            "BUFFER_GETS": 1320,
+                                            "EXECUTIONS": 660,
+                                            "OPTIMIZER_COST": 2,
+                                            "ELAPSED_TIME": 96536,
+                                            "ERROR": null,
+                                            "CPU_TIME": 110982,
+                                            "ROWS_PROCESSED": 660
+                                        }
+                                    },
+                                    "bind_children": {
+                                        "bind_name": ":1",
+                                        "bind_value": "SYS$USERS",
+                                        "bind_datatype": "VARCHAR2(32)",
+                                        "bind_captured": "YES"
+                                    },
+                                    "PLAN": {
+                                        "plan_snapshot1": {
+                                            "plan_lines": {
+                                                "plan_lines": [
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "| Id    | Operation                                                                                            | Name                          | Rows           | Bytes           | Cost            | Time     |",
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "|    1  | SELECT STATEMENT                                                                                     |                               |                |                 |               2 |          |",
+                                                    "|    2* | TABLE ACCESS (FULL)                                                                                  | SERVICE$                      |              1 |              46 |               2 | 00:00:01 |",
+                                                    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",
+                                                    "",
+                                                    "Access Predicates",
+                                                    "-----------------",
+                                                    "",
+                                                    "Filter predicates",
+                                                    "-----------------",
+                                                    "2* \"NAME\"=:1"
+                                                ]
+                                            },
+                                            "captured": "Y",
+                                            "plan_hash": 395742348
+                                        },
+                                        "SAME_PLAN": "Y",
+                                        "plan_snapshot2": {
+                                            "plan_lines": {},
+                                            "captured": "Y",
+                                            "plan_hash": 395742348
+                                        }
+                                    },
+                                    "content": 77
+                                },
+                                "text": "select decode(failover_method, NULL, 0 , 'BASIC', 1, 'PRECONNECT', 2 , 'PREPARSE', 4 , 0), decode(failover_type, NULL, 1 , 'NONE', 1 , 'SESSION', 2, 'SELECT',  4, 1), failover_retries, failover_delay, flags from service$ where name = :1",
+                                "content": "5ur69atw3vfhj",
                                 "command": "SELECT",
                                 "parser_schema": "SYS"
                             }
@@ -9238,17 +9239,17 @@
                 "COINCIDENT_OK_REGRET_DIFPLAN": 20
             },
             "NOCOINCIDENT_SQLID": {
-                "NOCOINCIDENT_SQLID_SNAP2": 0,
-                "NOCOINCIDENT_SQLID_SNAP1": 0
+                "NOCOINCIDENT_SQLID_SNAP2": 5,
+                "NOCOINCIDENT_SQLID_SNAP1": 3
             },
             "COINCIDENT_ERROR": {
-                "COINCIDENT_ERROR_SNAP2": 2,
-                "COINCIDENT_ERROR_BOTH": 0,
-                "COINCIDENT_ERROR_SNAP1": 0
+                "COINCIDENT_ERROR_SNAP2": 4,
+                "COINCIDENT_ERROR_BOTH": 11,
+                "COINCIDENT_ERROR_SNAP1": 7
             },
             "NOCOINCIDENT_BIND": {
-                "NOCOINCIDENT_BIND_SNAP1": 0,
-                "NOCOINCIDENT_BIND_SNAP2": 0
+                "NOCOINCIDENT_BIND_SNAP1": 2,
+                "NOCOINCIDENT_BIND_SNAP2": 1
             }
         }
     }

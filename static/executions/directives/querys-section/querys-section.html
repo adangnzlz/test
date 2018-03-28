@@ -1,0 +1,9 @@
+<div ng-if="qsc.loaded" class="container">
+    <h1 ng-bind="qsc.title"></h1>
+
+
+    <query-directive ng-if="qsc.querys.length > 0" ng-repeat="query in qsc.querys" query="query"></query-directive>
+
+    <h2 class="text-left" ng-if="qsc.querys.length === 0"> No querys found</h2>
+
+</div>

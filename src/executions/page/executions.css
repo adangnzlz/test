@@ -82,6 +82,10 @@ section#executions {
     font-weight: 700;
 }
 
+#executions .header-chart {
+    margin: 25px 0px;
+}
+
 #executions .header-chart div>span>p {
     margin-top: 10px;
     color: black;
@@ -90,6 +94,7 @@ section#executions {
 #executions .header-chart div>span>p>b.green {
     color: green;
 }
+
 #executions .header-chart div>span>p>b.red {
     color: red;
 }
@@ -106,4 +111,122 @@ section#executions {
 
 #executions pre {
     font-size: 10px;
+    text-align: left;
+}
+
+#executions .query {
+    border: 1px solid #eee;
+    margin: 5px;
+    margin-bottom: 50px;
+    padding: 5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+#executions .query .data-query {
+    width: 100%;
+    text-align: left;
+    margin: 10px;
+    border-radius: 7px;
+}
+
+#executions .query .panel {
+    margin: 15px 0px;
+}
+
+#executions .query .panel-heading {
+    cursor: pointer;
+}
+
+#executions .query .panel-body {
+    display: none;
+}
+
+#executions .query .panel-body.show {
+    display: block;
+}
+
+#executions .query p {
+    display: inline;
+    text-align: left;
+    margin: 10px;
+    font-size: 15px;
+}
+
+#executions querys-section>.container {
+    margin-top: 50px;
+    border-top: 6px solid #eee;
+    border-radius: 0px;
+    padding-top: 30px;
+}
+
+#executions query-directive .row p {
+    display: block;
+}
+
+#executions #stats-table {
+    font-size: 11px;
+    margin: 0px 15px;
+    width: calc(100% - 30px);
+}
+
+#executions #stats-table td.success {
+    color: yellowgreen;
+    font-weight: bolder;
+}
+
+#executions #stats-table td.error {
+    color: red;
+}
+
+#executions .table-binds {
+    background: white;
+}
+
+#executions #footer-table-stats {
+    font-size: 11px;
+    margin: 0px 15px;
+    width: calc(100% - 30px);
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    padding: 3px;
+    position: relative;
+}
+
+#executions #footer-table-stats p {
+    margin: 0px 10px;
+    text-align: left;
+    display: inline;
+}
+
+#executions #footer-table-stats div.buttons {
+    text-align: right;
+    position: absolute;
+    top: 3px;
+    right: 6px;
+}
+
+#executions #footer-table-stats div.fields {
+    text-align: left;
+    margin: 6px;
+}
+
+#executions #footer-table-stats .fa-arrow-down {
+    color: red;
+}
+
+#executions #footer-table-stats .fa-arrow-up {
+    color: green;
+}
+
+#executions #footer-table-stats b.green {
+    color: green;
+}
+
+#executions #footer-table-stats b.red {
+    color: red;
+}
+
+#executions button {
+    background: #3479b8;
+    color: white;
 }

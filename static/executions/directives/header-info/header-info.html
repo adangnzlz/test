@@ -1,5 +1,5 @@
-<div class="container">
-    <h1 >Datos del informe</h1>
+<div ng-if="hic.loaded" class="container">
+    <h1>Datos del informe</h1>
     <div class="data-report col-md-12 row">
         <span class="label">
             <a>
@@ -9,10 +9,9 @@
             <span class="bold">{{hic.data.HEADER.COMPARE_METHOD}}</span>
         </span>
         <div class="fields" ng-repeat="item in ::hic.data.HEADER.WORK">
-            <p class="bold col-sm-3 col-xs-6">{{item[0]}}:</p>
+            <p class="bold col-sm-3 col-xs-6">
+                <span ng-bind="hic.firstUppercase(item[0])"></span>:</p>
             <p class="col-sm-3 col-xs-6">{{item[1]}}</p>
         </div>
     </div>
-    <header-charts></header-charts>
-
 </div>

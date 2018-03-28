@@ -5,26 +5,29 @@ angular.module('app').directive('headerInfo', function () {
         controllerAs: 'hic',
         restrict: 'E',
         scope: {
+            data : '='
         },
         templateUrl: function (elem, attr) {
             return './executions/directives/header-info/header-info.html';
         }
     };
 
-    function HeaderInfoExecutions($scope, $stateParams, $state, executionsService, chartFactory) {
+    function HeaderInfoExecutions($scope, $stateParams, $state) {
 
         var hic = this;
-        hic.formatData = function (data) {
-            var data = data.REPORT;
-            data.HEADER = data.HEADER;
-            data.HEADER.WORK = Object.entries(data.HEADER.WORK)
-            data.BODY = data.BODY;
-            data.FOOT = data.FOOT;
-            return data
+        hic.loaded = false;
+
+        $scope.$watch('hic.data', function (newVal, oldVal) {
+            if (hic.data) {
+                hic.loaded = true;
+            }
+        });  
+
+        hic.firstUppercase = function (str) {
+            str = str.toLowerCase();
+            str = str.charAt(0).toUpperCase() + str.slice(1);
+            str = str.split('_').join(' ');
+            return str;
         }
-        executionsService.getData().success(function (data) {
-            hic.data = hic.formatData(data)
-            hic.querys = hic.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY.slice(0, 20);
-        });
     }
 });

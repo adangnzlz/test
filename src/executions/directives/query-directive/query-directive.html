@@ -44,7 +44,8 @@
                         </td>
                         <td ng-class="{ 'success' : (bindVars.STATS.stats_snap1.ERROR === null), 'error' : (bindVars.STATS.stats_snap1.ERROR !== null) }">{{bindVars.STATS.stats_snap1.ERROR === null ? 'OK' : bindVars.STATS.stats_snap1.ERROR }} </td>
                         <td title="{{qc.getRound(bindVars.STATS.stats_snap1.CPU_TIME, bindVars.STATS.stats_snap1.EXECUTIONS)}}" data-toggle="tooltip"
-                        data-placement="top" data-container="body" tooltip ng-bind="bindVars.STATS.stats_snap1.CPU_TIME"> </td>
+                            data-placement="top" data-container="body" tooltip ng-bind="bindVars.STATS.stats_snap1.CPU_TIME">
+                        </td>
                         <td ng-bind="bindVars.STATS.stats_snap1.ROWS_PROCESSED"> </td>
                     </tr>
                     <tr class="odd gradeX">
@@ -58,9 +59,10 @@
                         <td title="{{qc.getRound(bindVars.STATS.stats_snap2.ELAPSED_TIME, bindVars.STATS.stats_snap2.EXECUTIONS)}}" data-toggle="tooltip"
                             data-placement="top" data-container="body" tooltip ng-bind="bindVars.STATS.stats_snap2.ELAPSED_TIME">
                         </td>
-                        <td ng-class="{ 'success' :  (bindVars.STATS.stats_snap2.ERROR === null), 'error' : (bindVars.STATS.stats_snap2.ERROR !== null) }">{{bindVars.STATS.stats_snap2.ERROR  === null ? 'OK' : bindVars.STATS.stats_snap2.ERROR }} </td>
+                        <td ng-class="{ 'success' :  (bindVars.STATS.stats_snap2.ERROR === null), 'error' : (bindVars.STATS.stats_snap2.ERROR !== null) }">{{bindVars.STATS.stats_snap2.ERROR === null ? 'OK' : bindVars.STATS.stats_snap2.ERROR }} </td>
                         <td title="{{qc.getRound(bindVars.STATS.stats_snap2.CPU_TIME, bindVars.STATS.stats_snap2.EXECUTIONS)}}" data-toggle="tooltip"
-                            data-placement="top" data-container="body" tooltip ng-bind="bindVars.STATS.stats_snap2.CPU_TIME"> </td>
+                            data-placement="top" data-container="body" tooltip ng-bind="bindVars.STATS.stats_snap2.CPU_TIME">
+                        </td>
                         <td ng-bind="bindVars.STATS.stats_snap2.ROWS_PROCESSED"> </td>
                     </tr>
                 </tbody>
@@ -86,8 +88,9 @@
                     </p>
                 </div>
                 <div class="buttons">
-                    <button class="btn btn-sm" ng-if="bindVars.bind_children" ng-click="qc.toggleShowBinds($index)" ng-bind="qc.isVisible($index) ? 'Hide group binds variables' : 'Click here to show group binds variables'"> </button>
-                    <button class="btn btn-sm">Show plan</button>
+                    <button class="btn btn-sm" ng-if="bindVars.bind_children" ng-click="qc.toggleShowBinds($index)" ng-bind="qc.isVisible($index) ? 'Hide group binds variables' : 'Click here to show group binds variables'">
+                    </button>
+                    <button ng-click="qc.showPlan($index)" class="btn btn-sm">Show plan</button>
                 </div>
                 <div ng-if="bindVars.bind_children" class="panel-body" ng-class="{'show' : qc.isVisible($index)}">
                     <h4>Binds table</h4>
@@ -112,6 +115,7 @@
                         </table>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

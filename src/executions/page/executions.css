@@ -230,3 +230,15 @@ section#executions {
     background: #3479b8;
     color: white;
 }
+
+.ngdialog.ngdialog-theme-default.ace .ngdialog-content {
+    width: 100%;
+    height: 100%;
+    background: #eee;
+    padding: 25px;
+}
+
+.ngdialog.ngdialog-theme-default.ace .ngdialog-content pre {
+    min-height: 100%;
+    background: white;
+}

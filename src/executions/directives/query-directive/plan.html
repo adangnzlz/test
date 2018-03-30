@@ -1,0 +1,11 @@
+<div ng-show="qc.diffplan === 'N'" id="flex-container">
+    <div>
+        <div id="acediff-left-editor"></div>
+    </div>
+    <div id="acediff-gutter"></div>
+    <div>
+        <div id="acediff-right-editor">
+        </div>
+    </div>
+</div>
+<pre  ng-if="qc.diffplan === 'Y'" ng-bind="qc.left"></pre>

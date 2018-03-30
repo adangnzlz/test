@@ -12,10 +12,9 @@ angular.module('app').directive('queryDirective', function () {
         }
     };
 
-    function QuerysController($scope, $stateParams, $state) {
+    function QuerysController($scope, $stateParams, $state, ngDialog) {
 
         var qc = this;
-        qc.showBinds = false;
         $scope.$watch('qc.query', function (newVal, oldVal) {
             qc.query = newVal;
             qc.binds = qc.getBinds();
@@ -47,6 +46,7 @@ angular.module('app').directive('queryDirective', function () {
             }
             for (let i = 0; i < result.length; i++) {
                 qc['showBinds' + i] = false;
+                qc['showPlan' + i] = false;
             }
             return result;
         }
@@ -62,38 +62,44 @@ angular.module('app').directive('queryDirective', function () {
         }
 
         qc.toggleShowBinds = function (index) {
-            qc['showBinds' + index] = !qc['showBinds' + index]
+            qc['showBinds' + index] = !qc['showBinds' + index];
         }
         qc.isVisible = function (index) {
             return qc['showBinds' + index];
         }
 
+
+        qc.showPlan = function (index) {
+            qc.left = qc.bindsVars[index].PLAN.plan_snapshot1.plan_lines.plan_lines.toString().split(",").join("\n");
+            qc.diffplan = qc.bindsVars[index].PLAN.SAME_PLAN;
+            if (qc.diffplan === 'Y') {
+                qc.right = qc.left;
+            } else {
+                qc.right = qc.bindsVars[index].PLAN.plan_snapshot2.plan_lines.plan_lines.toString().split(",").join("\n");
+            }
+            ngDialog.open({ template: 'executions/directives/query-directive/plan.html', className: 'ngdialog-theme-default ace', scope: $scope });
+            $scope.$on('ngDialog.opened', function (e, $dialog) {
+                if (qc.diffplan !== 'Y') {
+                    var aceDiffer = new AceDiff({
+                        mode: "ace/mode/text",
+                        left: {
+                            content: qc.left,
+                            editable: false
+                        },
+                        right: {
+                            content: qc.right,
+                            editable: false
+                        }
+                    });
+                }
+            });
+        }
+
+
+
         qc.getRound = function (data, executions) {
             return Math.floor((data / executions) * 100) / 100;
         }
 
-        qc.showPlan = function () {
-            // var one = ec.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY[0].sql_id.binds.PLAN.plan_snapshot1.plan_lines.plan_lines.toString().split(",").join("\n");
-            // other = ec.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY[0].sql_id.binds.PLAN.plan_snapshot1.plan_lines.plan_lines.toString().split(",").join("\n");
-            // other = other.replace("Id", "Id2");
-            // color = '', span = null;
-            // var diff = JsDiff.diffLines(one, other),
-            //     display = document.getElementById('display'),
-            //     fragment = document.createDocumentFragment();
-
-            // diff.forEach(function (part) {
-            //     // green for additions, red for deletions
-            //     // grey for common parts
-            //     color = part.added ? 'green' :
-            //         part.removed ? 'red' : 'grey';
-            //     span = document.createElement('span');
-            //     span.style.color = color;
-            //     span.appendChild(document
-            //         .createTextNode(part.value));
-            //     fragment.appendChild(span);
-            // });
-
-            // display.appendChild(fragment);
-        }
     }
 });

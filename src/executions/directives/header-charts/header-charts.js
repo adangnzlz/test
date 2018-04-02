@@ -16,134 +16,8 @@ angular.module('app').directive('headerCharts', function () {
 
         var hcc = this;
 
-        hcc.createChartHeader1 = function (data) {
-            var colorA = '#337ab7';
-            var colorB = '#f0ad4e';
-            var series = chartFactory.formatChartHeader1(data, colorA, colorB);
-            var style = data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM > 0 ? 'fa-arrow-up' : 'fa-arrow-down';
-            var color = data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM > 0 ? 'green' : 'red';
-            Highcharts.chart('header-chart-1', {
-                chart: { type: 'column' },
-                title: { text: 'Coincident ok' },
-                xAxis: {
-                    categories: ['Improved', 'Unchangued', 'Regressed'], title: {
-                        text: '<p>Total number of querys : <b>' + data.FOOT.COINCIDENT_OK.COINCIDENT_OK_NUMBER +
-                            '</b></i></p><p>Total sum : <b class="' + color + '">' + data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM +
-                            '</b><i class="fa ' + style + '"></p>', useHTML: true
-                    }
-                },
-                yAxis: {
-                    title: { text: 'Number of querys' },
-                    stackLabels: {
-                        enabled: true,
-                        style: {
-                            fontWeight: 'bold',
-                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                        }
-                    } },
-                tooltip: { formatter: function () { return '<b>' + this.x + '</b><br/>' + this.series.name + ': ' + this.y + '<br/>' + 'Total: ' + this.point.stackTotal; } },
-                plotOptions: {
-                    column: {
-                        stacking: 'normal', cursor: 'pointer',
-                        point: {
-                            events: {
-                                click: function () {
-                                    hcc.onClickChart1(this, colorA, colorB);
-                                }
-                            }
-                        }
-                    }
-                },
-                series: series
-            });
-        }
-        hcc.createChartHeader2 = function (data) {
-            var data = chartFactory.formatChartHeader2(data);
-            Highcharts.chart('header-chart-2', {
-                chart: { type: 'column' },
-                title: { text: 'Total snapshots' },
-                xAxis: { type: 'category' },
-                yAxis: { title: { text: 'Number of querys' } },
-                legend: { enabled: false },
-                plotOptions: { series: { borderWidth: 0, dataLabels: { enabled: true } } },
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b><br/>'
-                },
-                series: data
-            });
-        }
-        hcc.createChartHeader3 = function (data) {
-            var data = chartFactory.formatChartHeader3(data);
-            Highcharts.chart('header-chart-3', {
-                chart: { type: 'column' },
-                title: { text: 'Ok/Wrong' },
-                xAxis: { type: 'category' },
-                yAxis: {
-                    title: { text: 'Number of querys' },
-                    stackLabels: {
-                        enabled: true,
-                        style: {
-                            fontWeight: 'bold',
-                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                        }
-                    }},
-                legend: { enabled: false },
-                plotOptions: {
-                    column: {
-                        stacking: 'normal', cursor: 'pointer',
-                        point: {
-                            events: {
-                                click: function () {
-                                    hcc.onClickChart3(this);
-                                }
-                            }
-                        }
-                    }
-                },
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b><br/>'
-                },
-                series: data
-            });
-        }
-        hcc.createChartHeader4 = function (data) {
-            var data = chartFactory.formatChartHeader4(data);
-            Highcharts.chart('header-chart-4', {
-                chart: { type: 'column' },
-                title: { text: 'Error by type' },
-                xAxis: { type: 'category' },
-                yAxis: { title: { text: 'Number of querys' } },
-                legend: { enabled: false },
-                plotOptions: { series: { borderWidth: 0, dataLabels: { enabled: true } } },
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b><br/>'
-                },
-                series: data
-            });
-        }
-        hcc.createChartHeader5 = function (data) {
-            var data = chartFactory.formatChartHeader5(data);
-            Highcharts.chart('header-chart-5', {
-                chart: { type: 'column' },
-                title: { text: 'No coincident' },
-                xAxis: { type: 'category' },
-                yAxis: { title: { text: 'Number of querys' } },
-                legend: { enabled: false },
-                plotOptions: { series: { borderWidth: 0, dataLabels: { enabled: true } } },
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b><br/>'
-                },
-                series: data
-            });
-        }
-
-        hcc.onClickChart1 = function (event, colorA, colorB) {
-            var plan = event.color === colorA ? 'Same plan' : 'Diff plan';
-            switch (event.category) {
+        hcc.onClickChart3 = function (category, plan) {
+            switch (category) {
                 case 'Improved':
                     hcc.querys = hcc.getQuerys(hcc.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY, 'IMPROVED', plan)
                     break;
@@ -156,32 +30,29 @@ angular.module('app').directive('headerCharts', function () {
                 default:
                     break;
             }
-            hcc.title = event.category + ' ' + plan;
+            hcc.title = category + ' ' + plan;
             $scope.$emit('changeQuerys', { querys: hcc.querys, title: hcc.title });
         }
 
-        hcc.onClickChart3 = function (event) {
-            switch (event.category) {
-                case 0:
+        hcc.onClickChart2 = function (category) {
+            switch (category) {
+                case 'OK':
                     hcc.querys = hcc.getQuerys(hcc.data.BODY.COINCIDENT.COINCIDENT_OK.QUERY)
-                    hcc.title = 'Coincident OK (excluded errors)';
+                    hcc.title = 'Querys OK';
                     break;
-                case 1:
+                case 'Wrong':
                     hcc.querys = hcc.getQuerys(hcc.data.BODY.COINCIDENT.COINCIDENT_ERROR.QUERY)
-                    hcc.title = 'Coincident error';
+                    hcc.title = 'Querys with errors';
                     break;
                 default:
                     break;
             }
-           
-            console.log(hcc.title)
-            console.log(hcc.querys.length);
             $scope.$emit('changeQuerys', { querys: hcc.querys, title: hcc.title });
         }
 
         hcc.getQuerys = function (querys, type, planType) {
             var querysResult = [];
-            if (!querys){
+            if (!querys) {
                 querys = [];
             }
             if (planType === 'Same plan') {
@@ -189,11 +60,11 @@ angular.module('app').directive('headerCharts', function () {
                     result = false;
                     return (item.sql_id.binds.PLAN ? item.sql_id.binds.PLAN.SAME_PLAN === 'Y' : false);
                 });
-            } else if (planType === 'Diff plan'){
+            } else if (planType === 'Diff plan') {
                 querysResult = querys.filter((item) => {
                     return item.sql_id.binds.PLAN ? item.sql_id.binds.PLAN.SAME_PLAN !== 'Y' : false;
                 });
-            }else{
+            } else {
                 querysResult = querys;
             }
             querysResult = querysResult.filter((item) => {
@@ -228,25 +99,123 @@ angular.module('app').directive('headerCharts', function () {
             return difPlan;
         }
 
-        hcc.formatData = function (data) {
-            var data = data.REPORT;
-            data.HEADER = data.HEADER;
-            data.HEADER.WORK = Object.entries(data.HEADER.WORK)
-            data.BODY = data.BODY;
-            data.FOOT = data.FOOT;
-            return data
+        hcc.createChart1 = function (data) {
+            hcc.chart2 = {};
+            hcc.chart2.labels = ["Snapshot 1", "Snapshot 2"];
+            hcc.chart2.options = {
+                title: { display: true, text: "Amount of ", fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif", fontColor: "#000", fontSize: 17, fontStyle: 'normal' },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function (label, index, labels) {
+                                return label / 1000 + 'k';
+                            }
+                        },
+                        scaleLabel: { display: true, labelString: 'Number of querys', fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif", fontColor: "#000" }
+                    }
+                    ]
+                },
+                animation: chartFactory.animation
+            };
+        }
+
+
+        hcc.createChart2 = function (data) {
+            hcc.chart3 = {};
+            hcc.chart3.labels = ["OK", "Wrong"];
+            hcc.chart3.options = {
+                title: { display: true, text: "Total queries", fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif", fontColor: "#000", fontSize: 17, fontStyle: 'normal' },
+                scales: {
+                    yAxes: [{
+                        ticks: { beginAtZero: true },
+                        scaleLabel: { display: true, labelString: 'Number of querys', fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif", fontColor: "#000" }
+                    }]
+                },
+                hover: { onHover: function (e) { $("#canvas2").css("cursor", e[0] ? "pointer" : "default"); } },
+                animation: chartFactory.animation,
+                onClick: function (e, array) {
+                    var element = this.getElementAtEvent(e);
+                    if (element.length) {
+                        hcc.onClickChart2(element[0]._model.label);
+                    }
+
+                }
+            };
+        }
+
+        hcc.createChart3 = function (data) {
+
+            hcc.chart1 = {};
+            hcc.chart1.labels = ["Improved", "Unchangued", "Regressed"];
+            hcc.chart1.options = {
+                title: { display: true, text: "Queries OK", fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif", fontColor: "#000", fontSize: 17, fontStyle: 'normal' },
+                legend: {
+                    display: true, text: "Queries OK", fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif", fontColor: "#000", position: 'bottom'
+                },
+                scales: {
+                    xAxes: [{ stacked: true }],
+                    yAxes: [{ stacked: true, scaleLabel: { display: true, labelString: 'Number of querys', fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif", fontColor: "#000" } }]
+                },
+                hover: { onHover: function (e) { $("#canvas3").css("cursor", e[0] ? "pointer" : "default"); } },
+                animation: chartFactory.animation,
+                onClick: function (e, array) {
+                    var element = this.getElementAtEvent(e);
+                    if (element.length) {
+                        hcc.onClickChart3(element[0]._model.label, element[0]._model.datasetLabel);
+                    }
+
+                }
+            };
+
+        }
+
+
+
+        hcc.createChart4 = function (data) {
+            hcc.chart4 = {};
+            hcc.chart4.labels = ["Snapshot 1", "Snapshot 2", "Both"];
+            hcc.chart4.options = {
+                title: { display: true, text: "Queries wrong", fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif", fontColor: "#000", fontSize: 17, fontStyle: 'normal' },
+                scales: {
+                    yAxes: [{
+                        ticks: { beginAtZero: true },
+                        scaleLabel: { display: true, labelString: 'Number of querys', fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif", fontColor: "#000" }
+                    }]
+                },
+                animation: chartFactory.animation
+            };
+
         }
 
 
         $scope.$watch('hcc.data', function (newVal, oldVal) {
             if (hcc.data) {
-                hcc.createChartHeader1(hcc.data);
-                hcc.createChartHeader2(hcc.data);
-                hcc.createChartHeader3(hcc.data);
-                hcc.createChartHeader4(hcc.data);
-                hcc.createChartHeader5(hcc.data);
+                var chartData1 = chartFactory.formatChartHeader1(hcc.data);
+                hcc.chart1.data = chartData1.dataset;
+                hcc.chart1.datasetOverride = chartData1.datasetOverride;
+
+
+                var chartData2 = chartFactory.formatChartHeader2(hcc.data, hcc.chart2.options);
+                hcc.chart2.data = chartData2.dataset;
+                hcc.chart2.datasetOverride = chartData2.datasetOverride;
+                hcc.chart2.options = chartData2.options;
+
+
+                var chartData3 = chartFactory.formatChartHeader3(hcc.data);
+                hcc.chart3.data = chartData3.dataset;
+                hcc.chart3.datasetOverride = chartData3.datasetOverride;
+
+                var chartData4 = chartFactory.formatChartHeader4(hcc.data);
+                hcc.chart4.data = chartData4.dataset;
+                hcc.chart4.datasetOverride = chartData4.datasetOverride;
             }
         });
+
+        hcc.createChart1(hcc.data);
+        hcc.createChart2(hcc.data);
+        hcc.createChart3(hcc.data);
+        hcc.createChart4(hcc.data);
 
     }
 });

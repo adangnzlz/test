@@ -70,29 +70,41 @@ angular.module('app').directive('queryDirective', function () {
 
 
         qc.showPlan = function (index) {
-            qc.left = qc.bindsVars[index].PLAN.plan_snapshot1.plan_lines.plan_lines.toString().split(",").join("\n");
-            qc.diffplan = qc.bindsVars[index].PLAN.SAME_PLAN;
-            if (qc.diffplan === 'Y') {
-                qc.right = qc.left;
-            } else {
-                qc.right = qc.bindsVars[index].PLAN.plan_snapshot2.plan_lines.plan_lines.toString().split(",").join("\n");
-            }
-            ngDialog.open({ template: 'executions/directives/query-directive/plan.html', className: 'ngdialog-theme-default ace', scope: $scope });
-            $scope.$on('ngDialog.opened', function (e, $dialog) {
-                if (qc.diffplan !== 'Y') {
-                    var aceDiffer = new AceDiff({
-                        mode: "ace/mode/text",
-                        left: {
-                            content: qc.left,
-                            editable: false
-                        },
-                        right: {
-                            content: qc.right,
-                            editable: false
-                        }
-                    });
+            var existValidPlan = false;
+            try {
+                qc.left = qc.bindsVars[index].PLAN.plan_snapshot1.plan_lines.plan_lines.toString().split(",").join("\n");
+                qc.diffplan = qc.bindsVars[index].PLAN.SAME_PLAN;
+                if (qc.diffplan === 'Y') {
+                    qc.right = qc.left;
+                } else {
+                    qc.right = qc.bindsVars[index].PLAN.plan_snapshot2.plan_lines.plan_lines.toString().split(",").join("\n");
                 }
-            });
+                existValidPlan = true;
+            } catch (error) {
+                ngDialog.open({
+                    template: '<h3 id="ngdialog1-aria-describedby" tabindex="-1" style="outline: 0px;margin: 0px;color: black;">No plan available</h3>',
+                    plain: true
+                });
+                existValidPlan = false;
+            }
+            if (existValidPlan){
+                ngDialog.open({ template: 'executions/directives/query-directive/plan.html', className: 'ngdialog-theme-default ace', scope: $scope });
+                $scope.$on('ngDialog.opened', function (e, $dialog) {
+                    if (qc.diffplan !== 'Y') {
+                        var aceDiffer = new AceDiff({
+                            mode: "ace/mode/text",
+                            left: {
+                                content: qc.left,
+                                editable: false
+                            },
+                            right: {
+                                content: qc.right,
+                                editable: false
+                            }
+                        });
+                    }
+                });
+            }
         }
 
 

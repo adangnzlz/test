@@ -9249,6 +9249,8 @@
         "FOOT": {
             "COINCIDENT_OK": {
                 "COINCIDENT_OK_IMPROVE": 74,
+                "COINCIDENT_OK_SUM_SNAP1": 24000,
+                "COINCIDENT_OK_SUM_SNAP2": 25000,
                 "COINCIDENT_OK_IMPROVE_SAMEPLAN": 40,
                 "COINCIDENT_OK_IMPROVE_DIFPLAN": 34,
                 "COINCIDENT_OK_EQUAL": 23,

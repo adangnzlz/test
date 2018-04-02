@@ -1,7 +1,29 @@
 <div class="container">
-    <div id="header-chart-1" class="header-chart col-md-4" style="height: 350px;">COINCIDENT OK</div>
-    <div id="header-chart-2" class="header-chart col-md-4" style="height: 350px;">TOTAL SNAPSHOTS</div>
-    <div id="header-chart-3" class="header-chart col-md-4" style="height: 350px;">OK/WRONG</div>
-    <div id="header-chart-4" class="header-chart col-md-4" style="height: 300px;">ERROR BY TYPE</div>
-    <div id="header-chart-5" class="header-chart col-md-4" style="height: 300px;">NO COINCIDENT</div>
-</div>
+    <div class="col-md-6" style="height: 350px;">
+        <canvas id="canvas1" class="chart chart-bar" chart-type="type" chart-data="hcc.chart2.data" chart-labels="hcc.chart2.labels" chart-series="hcc.chart2.series"
+         chart-colours="hcc.chart2.colors" chart-options="hcc.chart2.options"  chart-dataset-override="hcc.chart2.datasetOverride">
+        </canvas>
+    </div>
+    <div class="col-md-6" style="height: 350px;">
+        <canvas id="canvas2" class="chart chart-bar" chart-type="type" chart-data="hcc.chart3.data" chart-labels="hcc.chart3.labels" chart-series="hcc.chart3.series"
+         chart-colours="hcc.chart3.colors" chart-options="hcc.chart3.options"  chart-dataset-override="hcc.chart3.datasetOverride">
+        </canvas>
+    </div>
+    <div class="col-md-6" style="height: 350px;">
+        <span ng-if="hcc.data" class="leyenda">
+            <p>Total number of querys :<b>{{hcc.data.FOOT.COINCIDENT_OK.COINCIDENT_OK_NUMBER}}</b></p>
+            <p>Total sum impact:
+                <b ng-class="{'red' : hcc.data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM < 0, 'green' : hcc.data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM > 0}">{{hcc.data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM}}</b>
+                <i ng-class="{'fa fa-arrow-down' : hcc.data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM < 0, 'fa fa-arrow-up' : hcc.data.FOOT.COINCIDENT_OK.COINCIDENT_OK_SUM> 0}"></i>
+            </p>
+        </span>
+        <canvas id="canvas3" class="chart chart-bar" chart-type="type" chart-data="hcc.chart1.data" chart-labels="hcc.chart1.labels" chart-series="hcc.chart1.series"
+            chart-options="hcc.chart1.options" chart-dataset-override="hcc.chart1.datasetOverride">
+        </canvas>
+    </div>
+    <div class="col-md-6" style="height: 350px;  padding-top: 35px;">
+        <canvas id="canvas4" class="chart chart-bar" chart-type="type" chart-data="hcc.chart4.data" chart-labels="hcc.chart4.labels" chart-series="hcc.chart4.series"
+         chart-colours="hcc.chart4.colors" chart-options="hcc.chart4.options"  chart-dataset-override="hcc.chart4.datasetOverride">
+        </canvas>
+    </div>
+ </div>

@@ -1,17 +1,36 @@
 <div ng-if="hic.loaded" class="container">
-    <h1>Datos del informe</h1>
+    <h1>Snapshots comparative report by {{hic.data.HEADER.COMPARE_METHOD.toLowerCase()}}</h1>
     <div class="data-report col-md-12 row">
         <span class="label">
             <a>
                 <i class="fa fa-calendar"></i>
             </a>
-            <span ng-bind="hic.data.HEADER.DATE"></span>
-            <span class="bold">{{hic.data.HEADER.COMPARE_METHOD}}</span>
+            <span>Date: {{hic.data.HEADER.DATE.split(' ')[0]}} </span>
+            <span class="small">({{hic.data.HEADER.DATE.split(' ')[1]}})</span>
         </span>
-        <div class="fields" ng-repeat="item in ::hic.data.HEADER.WORK">
-            <p class="bold col-sm-3 col-xs-6">
-                <span ng-bind="hic.firstUppercase(item[0])"></span>:</p>
-            <p class="col-sm-3 col-xs-6">{{item[1]}}</p>
+
+        <div class="fields">
+            <p class="col-xs-12"><span class="bold">Work name: </span>{{hic.data.HEADER.WORK.work_name}}</p>
+            <p class="col-xs-12"><span class="bold">Work description: </span>{{hic.data.HEADER.WORK.work_description}}</p>
+            <div class="col-xs-6">
+                <p class="bold">Snapshot 1</p>
+                <div>
+                    <p class="col-xs-12">
+                        <span class="bold">Name: </span>{{hic.data.HEADER.WORK.snapshot1_name}}</p>
+                    <p class="col-xs-12">
+                        <span class="bold">Number of queries: </span>{{hic.data.HEADER.WORK.snapshot1_queries}}</p>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <p class="bold">Snapshot 2</p>
+                <div>
+                    <p class="col-xs-12">
+                        <span class="bold">Name: </span>{{hic.data.HEADER.WORK.snapshot2_name}}</p>
+                    <p class="col-xs-12">
+                        <span class="bold">Number of queries: </span>{{hic.data.HEADER.WORK.snapshot2_queries}}</p>
+                </div>
+            </div>
         </div>
+
     </div>
 </div>

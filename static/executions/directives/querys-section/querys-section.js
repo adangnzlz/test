@@ -7,7 +7,7 @@ angular.module('app').directive('querysSection', function () {
         scope: {
             data: '=',
             querys: '=',
-            title: '='
+            titlesection: '='
         },
         templateUrl: function (elem, attr) {
             return './executions/directives/querys-section/querys-section.html';
@@ -18,7 +18,7 @@ angular.module('app').directive('querysSection', function () {
 
         var qsc = this;
         qsc.loaded = false;
-        qsc.title = "Coincident ok (20 first querys)";
+        qsc.titlesection = "Coincident ok (20 first querys)";
 
         $scope.$watch('qsc.data', function (newVal, oldVal) {
             if (qsc.data) {
@@ -32,9 +32,9 @@ angular.module('app').directive('querysSection', function () {
                 }
             }
         });
-        $scope.$watch('qsc.title', function (newVal, oldVal) {
-            if (qsc.title) {
-                qsc.title = newVal;
+        $scope.$watch('qsc.titlesection', function (newVal, oldVal) {
+            if (qsc.titlesection) {
+                qsc.titlesection = newVal;
             }
         });
     }

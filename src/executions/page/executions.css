@@ -26,9 +26,29 @@ section#executions {
     margin: 20px 0px;
 }
 
+#executions .fields>div {
+    margin-top: 15px;
+    padding: 0px;
+}
+
+#executions .fields>div>p {
+    border-bottom: 1px solid #eee;
+    width: 50%;
+}
+
+
+
+#executions .fields>div>div>span {
+    display: inline;
+}
+
 #executions .label span {
     font-weight: 300;
     font-size: 17px;
+}
+
+#executions .label span.small {
+    font-size: 12px;
 }
 
 #executions .label span.bold {
@@ -231,6 +251,10 @@ section#executions {
     color: white;
 }
 
+#executions .leyenda p:nth-child(1) {
+    margin-top: 20px;
+}
+
 .ngdialog.ngdialog-theme-default.ace .ngdialog-content {
     width: 100%;
     height: 100%;
@@ -241,4 +265,16 @@ section#executions {
 .ngdialog.ngdialog-theme-default.ace .ngdialog-content pre {
     min-height: 100%;
     background: white;
+}
+
+#executions .red {
+    color: red;
+}
+
+#executions .green {
+    color: green;
+}
+
+#executions .bold {
+    font-weight: bolder;
 }

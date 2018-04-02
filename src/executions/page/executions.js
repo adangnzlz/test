@@ -19,7 +19,6 @@ angular.module('app').directive('executions', function () {
         ec.formatData = function (data) {
             var data = data.REPORT;
             data.HEADER = data.HEADER;
-            data.HEADER.WORK = Object.entries(data.HEADER.WORK)
             data.BODY = data.BODY;
             data.FOOT = data.FOOT;
             return data
